@@ -57,7 +57,8 @@
         "download": "Download",
         "next-with-label": "Next: {{label}}",
         "read-more": "Read more",
-        "hide": "Hide"
+        "hide": "Hide",
+        "preview": "Preview"
     },
     "aggregation": {
         "aggregation": "Aggregation",
@@ -159,6 +160,18 @@
         "domain-name": "Domain name",
         "domain-name-unique": "Domain name and protocol need to unique.",
         "error-verification-url": "A domain name shouldn't contain symbols '/' and ':'. Example: thingsboard.io",
+        "white-labeling": {
+          "title": "White labeling",
+          "application-title": "Application title",
+          "logo-image-height": "Logo height, px",
+          "show-platform": "Show platform name and version",
+          "platform-name": "Platform name",
+          "platform-version": "Platform version",
+          "icon": "Icon",
+          "logo": "Logo",
+          "primary-palette": "Primary palette",
+          "accent-palette": "Accent palette"
+        },
         "oauth2": {
           "access-token-uri": "Access token URI",
           "access-token-uri-required": "Access token URI is required.",

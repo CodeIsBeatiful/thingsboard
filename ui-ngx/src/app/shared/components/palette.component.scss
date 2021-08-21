@@ -1,0 +1,18 @@
+@import "../../../scss/constants";
+
+:host {
+}
+
+:host ::ng-deep {
+  mat-form-field {
+    .mat-form-field-infix {
+      mat-select {
+        .mat-select-value {
+          height: 32px;
+          color: inherit;
+          line-height: 32px;
+        }
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@
 ///
 
 import { Component } from '@angular/core';
+import {WhitelabelUtilsService} from "@core/services/whitelabel-utils.service";
 
 @Component({
   selector: 'tb-logo',
@@ -24,6 +25,9 @@ import { Component } from '@angular/core';
 export class LogoComponent {
 
   logo = 'assets/logo_title_white.svg';
+
+  constructor(public whitelabelUtilsService: WhitelabelUtilsService) {
+  }
 
   gotoThingsboard(): void {
     window.open('https://thingsboard.io', '_blank');

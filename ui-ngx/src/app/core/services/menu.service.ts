@@ -108,7 +108,6 @@ export class MenuService {
         name: 'admin.system-settings',
         type: 'toggle',
         path: '/settings',
-        height: '240px',
         icon: 'settings',
         pages: [
           {
@@ -152,6 +151,13 @@ export class MenuService {
             type: 'link',
             path: '/settings/resources-library',
             icon: 'folder'
+          },
+          {
+            id: guid(),
+            name: 'admin.white-labeling.title',
+            type: 'link',
+            path: '/settings/white-labeling',
+            icon: 'format_paint'
           }
         ]
       }
@@ -219,7 +225,12 @@ export class MenuService {
           {
             name: 'resource.resources-library',
             icon: 'folder',
-            path: '/resources-library'
+            path: '/settings/resources-library'
+          },
+          {
+            name: 'admin.white-labeling.title',
+            icon: 'format_paint',
+            path: '/settings/white-labeling',
           }
         ]
       }

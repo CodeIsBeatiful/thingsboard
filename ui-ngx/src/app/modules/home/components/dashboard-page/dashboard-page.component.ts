@@ -129,6 +129,7 @@ import {
   DashboardImageDialogData, DashboardImageDialogResult
 } from '@home/components/dashboard-page/dashboard-image-dialog.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import {WhitelabelUtilsService} from "@core/services/whitelabel-utils.service";
 
 // @dynamic
 @Component({
@@ -315,6 +316,7 @@ export class DashboardPageComponent extends PageComponent implements IDashboardC
               private overlay: Overlay,
               private viewContainerRef: ViewContainerRef,
               private cd: ChangeDetectorRef,
+              public whiteLabelUtilsService: WhitelabelUtilsService,
               private sanitizer: DomSanitizer) {
     super(store);
 

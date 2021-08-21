@@ -57,7 +57,8 @@
     "undo": "撤销",
     "update": "更新",
     "view": "查看",
-    "yes": "是"
+    "yes": "是",
+    "preview": "预览"
   },
   "admin": {
     "aws-access-key-id": "AWS访问密钥ID",
@@ -96,6 +97,18 @@
     "number-from-required": "发送方电话号码必填。",
     "number-to": "电话号码至",
     "number-to-required": "电话号码必填。",
+    "white-labeling": {
+      "title": "白标",
+      "application-title": "应用标题",
+      "logo-image-height": "Logo高度（px）",
+      "show-platform": "显示平台名称与版本",
+      "platform-name": "平台名称",
+      "platform-version": "平台版本",
+      "icon": "Icon",
+      "logo": "Logo",
+      "primary-palette": "主题颜色",
+      "accent-palette": "交互颜色"
+    },
     "oauth2": {
       "access-token-uri": "访问令牌URI",
       "access-token-uri-required": "访问令牌 URI 必填。",
@@ -724,6 +737,9 @@
     "no-dashboards-matching": "找不到符合 '{{entity}}' 的仪表板。",
     "no-dashboards-text": "没有找到仪表板",
     "no-image": "无图像选择",
+    "empty-image": "无图像",
+    "maximum-upload-file-size": "最大上传文件大小: {{ size }}",
+    "cannot-upload-file": "无法上传文件",
     "no-states-text": "找不到状态",
     "no-widgets": "没有配置部件",
     "open-dashboard": "打开仪表板",

@@ -29,6 +29,7 @@ import { SmsProviderComponent } from '@home/pages/admin/sms-provider.component';
 import { HomeSettingsComponent } from '@home/pages/admin/home-settings.component';
 import { EntitiesTableComponent } from '@home/components/entity/entities-table.component';
 import { ResourcesLibraryTableConfigResolver } from '@home/pages/admin/resource/resources-library-table-config.resolve';
+import {WhiteLabelingComponent} from "@home/pages/admin/white-labeling.component";
 
 @Injectable()
 export class OAuth2LoginProcessingUrlResolver implements Resolve<string> {
@@ -156,6 +157,19 @@ const routes: Routes = [
         },
         resolve: {
           entitiesTableConfig: ResourcesLibraryTableConfigResolver
+        }
+      },
+      {
+        path: 'white-labeling',
+        component: WhiteLabelingComponent,
+        canDeactivate: [ConfirmOnExitGuard],
+        data: {
+          auth: [Authority.SYS_ADMIN],
+          title: 'admin.white-labeling.title',
+          breadcrumb: {
+            label: 'admin.white-labeling.title',
+            icon: 'format_paint'
+          }
         }
       }
     ]

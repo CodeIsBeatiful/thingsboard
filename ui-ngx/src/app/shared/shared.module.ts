@@ -145,6 +145,8 @@ import { OtaPackageAutocompleteComponent } from '@shared/components/ota-package/
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { CopyButtonComponent } from '@shared/components/button/copy-button.component';
 import { TogglePasswordComponent } from '@shared/components/button/toggle-password.component';
+import {TrustUrlPipe} from "@shared/pipe/trust-url.pipe";
+import {PaletteComponent} from "@shared/components/palette.component";
 
 @NgModule({
   providers: [
@@ -155,6 +157,7 @@ import { TogglePasswordComponent } from '@shared/components/button/toggle-passwo
     TruncatePipe,
     TbJsonPipe,
     FileSizePipe,
+    TrustUrlPipe,
     {
       provide: FlowInjectionToken,
       useValue: Flow
@@ -234,6 +237,7 @@ import { TogglePasswordComponent } from '@shared/components/button/toggle-passwo
     TruncatePipe,
     TbJsonPipe,
     FileSizePipe,
+    TrustUrlPipe,
     SelectableColumnsPipe,
     KeyboardShortcutPipe,
     TbJsonToStringDirective,
@@ -244,7 +248,8 @@ import { TogglePasswordComponent } from '@shared/components/button/toggle-passwo
     OtaPackageAutocompleteComponent,
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
-    TogglePasswordComponent
+    TogglePasswordComponent,
+    PaletteComponent
   ],
   imports: [
     CommonModule,
@@ -409,6 +414,7 @@ import { TogglePasswordComponent } from '@shared/components/button/toggle-passwo
     TbJsonPipe,
     KeyboardShortcutPipe,
     FileSizePipe,
+    TrustUrlPipe,
     SelectableColumnsPipe,
     TranslateModule,
     JsonObjectEditDialogComponent,
@@ -418,7 +424,8 @@ import { TogglePasswordComponent } from '@shared/components/button/toggle-passwo
     OtaPackageAutocompleteComponent,
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
-    TogglePasswordComponent
+    TogglePasswordComponent,
+    PaletteComponent
   ]
 })
 export class SharedModule { }
