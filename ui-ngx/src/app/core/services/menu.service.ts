@@ -230,7 +230,7 @@ export class MenuService {
           {
             name: 'admin.white-labeling.title',
             icon: 'format_paint',
-            path: '/settings/white-labeling',
+            path: '/settings/white-labeling'
           }
         ]
       }
