@@ -15,5 +15,5 @@
     limitations under the License.
 
 -->
-<img (click)="gotoThingsboard()" fxFlex [src]="logo"
+<img (click)="gotoThingsboard()" fxFlex [src]="whitelabelUtilsService.whiteLabeling.logoImageUrl | trustUrl"
          aria-label="logo" class="tb-logo-title"/>

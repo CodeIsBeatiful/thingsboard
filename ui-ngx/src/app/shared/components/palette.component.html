@@ -1,0 +1,17 @@
+<div fxLayout="column" fxLayoutGap="8px">
+  <mat-form-field [formGroup]="paletteFormGroup" class="mat-block">
+    <mat-label>{{label}}</mat-label>
+    <mat-select formControlName="type" [style.background-color]="getValueByGroup(paletteFormGroup.get('type').value)" style="color:rgb(255, 255, 255);font-weight: 500;">
+      <mat-option *ngFor="let materialColor of materialColors" [value]="materialColor.group"
+                  [style.background-color]="materialColor.value" style="color: rgb(255, 255, 255);">
+        {{materialColor.group}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!--            <div fxLayout="column" fxLayoutAlign="center">-->
+  <!--              <button mat-raised-button disabled type="button">-->
+  <!--                Customize-->
+  <!--              </button>-->
+  <!--            </div>-->
+</div>
+

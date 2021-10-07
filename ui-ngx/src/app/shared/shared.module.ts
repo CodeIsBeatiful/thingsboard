@@ -147,6 +147,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { CopyButtonComponent } from '@shared/components/button/copy-button.component';
 import { TogglePasswordComponent } from '@shared/components/button/toggle-password.component';
 import { markedOptionsFactory } from '@shared/components/markdown.factory';
+import {TrustUrlPipe} from "@shared/pipe/trust-url.pipe";
+import {PaletteComponent} from "@shared/components/palette.component";
 
 @NgModule({
   providers: [
@@ -157,6 +159,7 @@ import { markedOptionsFactory } from '@shared/components/markdown.factory';
     TruncatePipe,
     TbJsonPipe,
     FileSizePipe,
+    TrustUrlPipe,
     {
       provide: FlowInjectionToken,
       useValue: Flow
@@ -236,6 +239,7 @@ import { markedOptionsFactory } from '@shared/components/markdown.factory';
     TruncatePipe,
     TbJsonPipe,
     FileSizePipe,
+    TrustUrlPipe,
     SelectableColumnsPipe,
     KeyboardShortcutPipe,
     TbJsonToStringDirective,
@@ -246,7 +250,8 @@ import { markedOptionsFactory } from '@shared/components/markdown.factory';
     OtaPackageAutocompleteComponent,
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
-    TogglePasswordComponent
+    TogglePasswordComponent,
+    PaletteComponent
   ],
   imports: [
     CommonModule,
@@ -420,6 +425,7 @@ import { markedOptionsFactory } from '@shared/components/markdown.factory';
     TbJsonPipe,
     KeyboardShortcutPipe,
     FileSizePipe,
+    TrustUrlPipe,
     SelectableColumnsPipe,
     TranslateModule,
     JsonObjectEditDialogComponent,
@@ -429,7 +435,8 @@ import { markedOptionsFactory } from '@shared/components/markdown.factory';
     OtaPackageAutocompleteComponent,
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
-    TogglePasswordComponent
+    TogglePasswordComponent,
+    PaletteComponent
   ]
 })
 export class SharedModule { }
