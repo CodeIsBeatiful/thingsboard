@@ -4,11 +4,11 @@ import { AppState } from '@core/core.state';
 import { PageComponent } from '@shared/components/page.component';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {WhiteLabeling} from '@shared/models/settings.models';
-import { WhiteLabelService } from '@core/http/white-label.service';
 import { HasConfirmForm } from '@core/guards/confirm-on-exit.guard';
-import {WhitelabelUtilsService} from "@core/services/whitelabel-utils.service";
-import {MaterialColorItem, materialColors} from '@app/shared/models/material.models';
+import { MaterialColorItem } from '@app/shared/models/material.models';
+import { WhiteLabeling } from '@shared/models/settings.models';
+import { WhiteLabelService } from '@core/http/white-label.service';
+import { WhitelabelUtilsService } from "@core/services/whitelabel-utils.service";
 
 @Component({
   selector: 'tb-white-labeling',
@@ -39,6 +39,9 @@ export class WhiteLabelingComponent extends PageComponent implements OnInit, Has
     this.buildWhitelabelingSettingsForm();
     this.whiteLabelService.getWhiteLabel().subscribe(
       (whiteLabel) => {
+        if(!whiteLabel) {
+          whiteLabel = this.whiteLabelUtilsService.getDefaultWhiteLabeling();
+        }
         this.whiteLabeling = whiteLabel;
         this.whiteLabelingSettings.reset(this.whiteLabeling);
       }

@@ -3,7 +3,11 @@ package org.thingsboard.server.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Charsets;
-import freemarker.template.Configuration;
+import io.bit3.jsass.Compiler;
+import io.bit3.jsass.Options;
+import io.bit3.jsass.Output;
+import io.bit3.jsass.OutputStyle;
+import io.bit3.jsass.importer.Import;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,24 +23,18 @@ import org.thingsboard.server.common.data.whitelabel.Palette;
 import org.thingsboard.server.common.data.whitelabel.PaletteSettings;
 import org.thingsboard.server.dao.settings.AdminSettingsService;
 import org.thingsboard.server.queue.util.TbCoreComponent;
-import io.bit3.jsass.Compiler;
-import io.bit3.jsass.Options;
-import io.bit3.jsass.Output;
-import io.bit3.jsass.OutputStyle;
-import io.bit3.jsass.importer.Import;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @TbCoreComponent
 @RequestMapping("/api")
 public class WhiteLabelController extends BaseController{
-
-    @Autowired
-    private Configuration freemarkerConfig;
 
     @Autowired
     private AdminSettingsService adminSettingsService;
@@ -82,7 +80,7 @@ public class WhiteLabelController extends BaseController{
             } else if (fileName != null) {
                 URI scssFileUri = scssResource.getURI();
                 Import scssImport = new Import(scssFileUri, scssFileUri, scssContent);
-                String path = fileName.substring(0, fileName.length() - ".scss".length());
+                String path = fileName.substring(0, fileName.length() - SCSS_EXTENSION.length());
                 this.importMap.put(path, scssImport);
             }
         }

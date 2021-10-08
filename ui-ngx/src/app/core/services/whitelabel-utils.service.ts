@@ -23,7 +23,7 @@ import {LocalStorageService} from "@core/local-storage/local-storage.service";
 import {AdminService} from "@core/http/admin.service";
 import {DOCUMENT} from "@angular/common";
 import {WhiteLabelService} from "@core/http/white-label.service";
-import {WhiteLabeling} from "@shared/models/settings.models";
+import {Palette, WhiteLabeling} from "@shared/models/settings.models";
 import {whiteLabeling as wl} from "@global/white-labeling";
 import {ActionSettingsChangeLanguage} from "@core/settings/settings.actions";
 import {select, Store} from "@ngrx/store";
@@ -43,8 +43,6 @@ export class WhitelabelUtilsService {
   loginThemeCss: String;
 
   appThemeCss: String;
-
-  // tempAppThemeCss: String;
 
   loginThemeCssElm: any;
 
@@ -91,6 +89,9 @@ export class WhitelabelUtilsService {
   setup():Observable<WhiteLabeling>{
     return this.whiteLabelService.getWhiteLabel().pipe(
       map((whiteLabel)=>{
+        if (!whiteLabel) {
+          whiteLabel = this.getDefaultWhiteLabeling();
+        }
         this.whiteLabeling = this.mergeWithConst(whiteLabel);
         this.process(true);
         return whiteLabel;
@@ -110,6 +111,26 @@ export class WhitelabelUtilsService {
         return whiteLabelSubject;
       })
     );
+  }
+
+  getDefaultWhiteLabeling(): WhiteLabeling {
+    return {
+      appTitle: null,
+      customCss: null,
+      enableHelpLinks: false,
+      faviconUrl: null,
+      helpLinkBaseUrl: null,
+      logoImageHeight: null,
+      logoImageUrl: null,
+      paletteSettings: {
+        primaryPalette: null,
+        accentPalette: null
+      },
+      platformName: null,
+      platformVersion: null,
+      showNameVersion: false,
+      whiteLabelingEnabled: true
+    }
   }
 
   setupLoginTheme():Observable<void> {
