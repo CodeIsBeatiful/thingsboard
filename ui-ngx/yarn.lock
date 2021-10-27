@@ -2520,6 +2520,31 @@ babel-plugin-dynamic-import-node@^2.3.3:
   dependencies:
     object.assign "^4.1.0"
 
+babylonjs-gltf2interface@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmmirror.com/babylonjs-gltf2interface/download/babylonjs-gltf2interface-4.2.0.tgz#b0ef1e11e3574cf2c6f573d0c5c34857a2a7b322"
+  integrity sha1-sO8eEeNXTPLG9XPQxcNIV6KnsyI=
+
+babylonjs-gui@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmmirror.com/babylonjs-gui/download/babylonjs-gui-4.2.0.tgz#f9370e922d6de5f99ebbeddd4a15972621ee1941"
+  integrity sha1-+TcOki1t5fmeu+3dShWXJiHuGUE=
+  dependencies:
+    babylonjs "4.2.0"
+
+babylonjs-loaders@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmmirror.com/babylonjs-loaders/download/babylonjs-loaders-4.2.0.tgz#3d536cb72bf8650fe7f1cee12380bea3227d79c0"
+  integrity sha1-PVNstyv4ZQ/n8c7hI4C+oyJ9ecA=
+  dependencies:
+    babylonjs "4.2.0"
+    babylonjs-gltf2interface "4.2.0"
+
+babylonjs@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmmirror.com/babylonjs/download/babylonjs-4.2.0.tgz#8f0d957a726de4c065904b14c2f413f455145d38"
+  integrity sha1-jw2VenJt5MBlkEsUwvQT9FUUXTg=
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"

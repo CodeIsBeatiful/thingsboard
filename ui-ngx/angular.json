@@ -93,6 +93,9 @@
               "node_modules/marked/lib/marked.js",
               "node_modules/prismjs/prism.js",
               "node_modules/prismjs/components/prism-bash.min.js",
+              "node_modules/babylonjs/babylon.js",
+              "node_modules/babylonjs-gui/babylon.gui.js",
+              "node_modules/babylonjs-loaders/babylonjs.loaders.js",
               "node_modules/prismjs/components/prism-json.min.js"
             ],
             "customWebpackConfig": {
