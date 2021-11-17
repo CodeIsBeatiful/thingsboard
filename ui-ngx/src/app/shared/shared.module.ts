@@ -146,9 +146,22 @@ import { OtaPackageAutocompleteComponent } from '@shared/components/ota-package/
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { CopyButtonComponent } from '@shared/components/button/copy-button.component';
 import { TogglePasswordComponent } from '@shared/components/button/toggle-password.component';
-import { markedOptionsFactory } from '@shared/components/markdown.factory';
+import { HelpPopupComponent } from '@shared/components/help-popup.component';
+import { TbPopoverComponent, TbPopoverDirective } from '@shared/components/popover.component';
+import { TbStringTemplateOutletDirective } from '@shared/components/directives/sring-template-outlet.directive';
+import { TbComponentOutletDirective} from '@shared/components/directives/component-outlet.directive';
+import { HelpMarkdownComponent } from '@shared/components/help-markdown.component';
+import { MarkedOptionsService } from '@shared/components/marked-options.service';
+import { TbPopoverService } from '@shared/components/popover.service';
+import { HELP_MARKDOWN_COMPONENT_TOKEN, SHARED_MODULE_TOKEN } from '@shared/components/tokens';
+import { TbMarkdownComponent } from '@shared/components/markdown.component';
+import { ProtobufContentComponent } from './components/protobuf-content.component';
 import {TrustUrlPipe} from "@shared/pipe/trust-url.pipe";
 import {PaletteComponent} from "@shared/components/palette.component";
+
+export function MarkedOptionsFactory(markedOptionsService: MarkedOptionsService) {
+  return markedOptionsService;
+}
 
 @NgModule({
   providers: [
@@ -167,7 +180,10 @@ import {PaletteComponent} from "@shared/components/palette.component";
     {
       provide: MAT_DATE_LOCALE,
       useValue: 'en-GB'
-    }
+    },
+    { provide: HELP_MARKDOWN_COMPONENT_TOKEN, useValue: HelpMarkdownComponent },
+    { provide: SHARED_MODULE_TOKEN, useValue: SharedModule },
+    TbPopoverService
   ],
   declarations: [
     FooterComponent,
@@ -179,7 +195,14 @@ import {PaletteComponent} from "@shared/components/palette.component";
     MatChipDraggableDirective,
     TbHotkeysDirective,
     TbAnchorComponent,
+    TbPopoverComponent,
+    TbStringTemplateOutletDirective,
+    TbComponentOutletDirective,
+    TbPopoverDirective,
+    TbMarkdownComponent,
     HelpComponent,
+    HelpMarkdownComponent,
+    HelpPopupComponent,
     TbCheckboxComponent,
     TbSnackBarComponent,
     TbErrorComponent,
@@ -239,7 +262,6 @@ import {PaletteComponent} from "@shared/components/palette.component";
     TruncatePipe,
     TbJsonPipe,
     FileSizePipe,
-    TrustUrlPipe,
     SelectableColumnsPipe,
     KeyboardShortcutPipe,
     TbJsonToStringDirective,
@@ -251,7 +273,10 @@ import {PaletteComponent} from "@shared/components/palette.component";
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
     TogglePasswordComponent,
-    PaletteComponent
+    TrustUrlPipe,
+    PaletteComponent,
+    ProtobufContentComponent
+
   ],
   imports: [
     CommonModule,
@@ -307,7 +332,8 @@ import {PaletteComponent} from "@shared/components/palette.component";
       sanitize: SecurityContext.NONE,
       markedOptions: {
         provide: MarkedOptions,
-        useFactory: markedOptionsFactory
+        useFactory: MarkedOptionsFactory,
+        deps: [MarkedOptionsService]
       }
     })
   ],
@@ -321,7 +347,13 @@ import {PaletteComponent} from "@shared/components/palette.component";
     MatChipDraggableDirective,
     TbHotkeysDirective,
     TbAnchorComponent,
+    TbStringTemplateOutletDirective,
+    TbComponentOutletDirective,
+    TbPopoverDirective,
+    TbMarkdownComponent,
     HelpComponent,
+    HelpMarkdownComponent,
+    HelpPopupComponent,
     TbCheckboxComponent,
     TbErrorComponent,
     TbCheatSheetComponent,
@@ -425,7 +457,6 @@ import {PaletteComponent} from "@shared/components/palette.component";
     TbJsonPipe,
     KeyboardShortcutPipe,
     FileSizePipe,
-    TrustUrlPipe,
     SelectableColumnsPipe,
     TranslateModule,
     JsonObjectEditDialogComponent,
@@ -436,7 +467,9 @@ import {PaletteComponent} from "@shared/components/palette.component";
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
     TogglePasswordComponent,
-    PaletteComponent
+    TrustUrlPipe,
+    PaletteComponent,
+    ProtobufContentComponent
   ]
 })
 export class SharedModule { }
