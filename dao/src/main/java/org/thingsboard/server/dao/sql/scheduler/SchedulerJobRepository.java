@@ -13,11 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thingsboard.server.common.data;
+package org.thingsboard.server.dao.sql.scheduler;
+
+import org.springframework.data.repository.CrudRepository;
+import org.thingsboard.server.dao.model.sql.SchedulerJobEntity;
+
+import java.util.UUID;
 
 /**
- * @author Andrew Shvayka
+ * Created by blackstar-baba on 1/10/2022.
  */
-public enum EntityType {
-    TENANT, CUSTOMER, USER, DASHBOARD, ASSET, DEVICE, ALARM, RULE_CHAIN, RULE_NODE, SCHEDULER_JOB, ENTITY_VIEW, WIDGETS_BUNDLE, WIDGET_TYPE, TENANT_PROFILE, DEVICE_PROFILE, API_USAGE_STATE, TB_RESOURCE, OTA_PACKAGE, EDGE, RPC;
+public interface SchedulerJobRepository extends CrudRepository<SchedulerJobEntity, UUID> {
+
+    Long countByTenantId(UUID tenantId);
 }

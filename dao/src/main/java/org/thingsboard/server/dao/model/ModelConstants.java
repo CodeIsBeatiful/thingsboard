@@ -521,6 +521,16 @@ public class ModelConstants {
     public static final String RPC_STATUS = "status";
     public static final String RPC_ADDITIONAL_INFO = ADDITIONAL_INFO_PROPERTY;
 
+
+    public static final String SCHEDULER_JOB_COLUMN_FAMILY_NAME = "scheduler_job";
+    public static final String SCHEDULER_JOB_TENANT_ID_PROPERTY = TENANT_ID_PROPERTY;
+    public static final String SCHEDULER_JOB_CUSTOMER_ID_PROPERTY = CUSTOMER_ID_PROPERTY;
+    public static final String SCHEDULER_JOB_NAME_PROPERTY = "name";
+    public static final String SCHEDULER_JOB_TYPE_PROPERTY = "type";
+    public static final String SCHEDULER_JOB_ADDITIONAL_INFO_PROPERTY = ADDITIONAL_INFO_PROPERTY;
+    public static final String SCHEDULER_JOB_SCHEDULER_PROPERTY = "scheduler";
+    public static final String SCHEDULER_JOB_CONFIGURATION_PROPERTY = "configuration";
+
     /**
      * Edge constants.
      */

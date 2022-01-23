@@ -620,6 +620,19 @@ CREATE TABLE IF NOT EXISTS rpc (
     status varchar(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS scheduler_job (
+    id uuid NOT NULL CONSTRAINT scheduler_job_pkey PRIMARY KEY,
+    created_time bigint NOT NULL,
+    tenant_id uuid,
+    name varchar(255),
+    search_text varchar(255),
+    customer_id uuid,
+    type varchar(255),
+    scheduler varchar,
+    configuration varchar(10000000),
+    additional_info varchar(10000000)
+);
+
 CREATE OR REPLACE PROCEDURE cleanup_events_by_ttl(IN ttl bigint, IN debug_ttl bigint, INOUT deleted bigint)
     LANGUAGE plpgsql AS
 $$

@@ -37,6 +37,7 @@ import org.thingsboard.server.common.msg.queue.TbCallback;
 import org.thingsboard.server.common.stats.StatsFactory;
 import org.thingsboard.server.common.transport.util.DataDecodingEncodingService;
 import org.thingsboard.server.dao.tenant.TbTenantProfileCache;
+import org.thingsboard.server.gen.transport.TransportProtos.SchedulerServiceMsgProto;
 import org.thingsboard.server.gen.transport.TransportProtos.DeviceStateServiceMsgProto;
 import org.thingsboard.server.gen.transport.TransportProtos.EdgeNotificationMsgProto;
 import org.thingsboard.server.gen.transport.TransportProtos.FromDeviceRPCResponseProto;
@@ -67,6 +68,7 @@ import org.thingsboard.server.service.queue.processing.IdMsgPair;
 import org.thingsboard.server.common.msg.rpc.FromDeviceRpcResponse;
 import org.thingsboard.server.service.rpc.TbCoreDeviceRpcService;
 import org.thingsboard.server.service.rpc.ToDeviceRpcRequestActorMsg;
+import org.thingsboard.server.service.scheduler.SchedulerService;
 import org.thingsboard.server.service.state.DeviceStateService;
 import org.thingsboard.server.service.subscription.SubscriptionManagerService;
 import org.thingsboard.server.service.subscription.TbLocalSubscriptionService;
@@ -113,6 +115,7 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
     private final TbCoreDeviceRpcService tbCoreDeviceRpcService;
     private final EdgeNotificationService edgeNotificationService;
     private final OtaPackageStateService firmwareStateService;
+    private final SchedulerService schedulerService;
     private final TbCoreConsumerStats stats;
     protected final TbQueueConsumer<TbProtoQueueMsg<ToUsageStatsServiceMsg>> usageStatsConsumer;
     private final TbQueueConsumer<TbProtoQueueMsg<ToOtaPackageStateServiceMsg>> firmwareStatesConsumer;
@@ -134,6 +137,7 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
                                         TbTenantProfileCache tenantProfileCache,
                                         TbApiUsageStateService apiUsageStateService,
                                         EdgeNotificationService edgeNotificationService,
+                                        SchedulerService schedulerService,
                                         OtaPackageStateService firmwareStateService) {
         super(actorContext, encodingService, tenantProfileCache, deviceProfileCache, apiUsageStateService, tbCoreQueueFactory.createToCoreNotificationsMsgConsumer());
         this.mainConsumer = tbCoreQueueFactory.createToCoreMsgConsumer();
@@ -147,6 +151,7 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
         this.stats = new TbCoreConsumerStats(statsFactory);
         this.statsService = statsService;
         this.firmwareStateService = firmwareStateService;
+        this.schedulerService = schedulerService;
     }
 
     @PostConstruct
@@ -224,6 +229,9 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
                                 } else if (toCoreMsg.hasDeviceStateServiceMsg()) {
                                     log.trace("[{}] Forwarding message to state service {}", id, toCoreMsg.getDeviceStateServiceMsg());
                                     forwardToStateService(toCoreMsg.getDeviceStateServiceMsg(), callback);
+                                } else if (toCoreMsg.hasSchedulerServiceMsg()) {
+                                    log.trace("[{}] Forwarding message to scheduler service {}", id, toCoreMsg.getSchedulerServiceMsg());
+                                    forwardToSchedulerService(toCoreMsg.getSchedulerServiceMsg(), callback);
                                 } else if (toCoreMsg.hasEdgeNotificationMsg()) {
                                     log.trace("[{}] Forwarding message to edge service {}", id, toCoreMsg.getEdgeNotificationMsg());
                                     forwardToEdgeNotificationService(toCoreMsg.getEdgeNotificationMsg(), callback);
@@ -492,6 +500,13 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
             stats.log(deviceStateServiceMsg);
         }
         stateService.onQueueMsg(deviceStateServiceMsg, callback);
+    }
+
+    private void forwardToSchedulerService(SchedulerServiceMsgProto schedulerServiceMsg, TbCallback callback) {
+        if (statsEnabled) {
+            stats.log(schedulerServiceMsg);
+        }
+        schedulerService.onQueueMsg(schedulerServiceMsg, callback);
     }
 
     private void forwardToEdgeNotificationService(EdgeNotificationMsgProto edgeNotificationMsg, TbCallback callback) {

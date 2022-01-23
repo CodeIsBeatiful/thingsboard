@@ -585,3 +585,17 @@ CREATE TABLE IF NOT EXISTS rpc (
     additional_info varchar(10000000),
     status varchar(255) NOT NULL
 );
+
+
+CREATE TABLE IF NOT EXISTS scheduler_job (
+    id uuid NOT NULL CONSTRAINT scheduler_job_pkey PRIMARY KEY,
+    created_time bigint NOT NULL,
+    tenant_id uuid,
+    name varchar(255),
+    search_text varchar(255),
+    customer_id uuid,
+    type varchar(255),
+    scheduler varchar,
+    configuration varchar(10000000),
+    additional_info varchar(10000000)
+);

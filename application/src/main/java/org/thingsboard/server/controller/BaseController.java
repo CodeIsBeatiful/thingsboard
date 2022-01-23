@@ -72,6 +72,7 @@ import org.thingsboard.server.common.data.id.OtaPackageId;
 import org.thingsboard.server.common.data.id.RpcId;
 import org.thingsboard.server.common.data.id.RuleChainId;
 import org.thingsboard.server.common.data.id.RuleNodeId;
+import org.thingsboard.server.common.data.id.SchedulerJobId;
 import org.thingsboard.server.common.data.id.TbResourceId;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.id.TenantProfileId;
@@ -89,6 +90,7 @@ import org.thingsboard.server.common.data.rpc.Rpc;
 import org.thingsboard.server.common.data.rule.RuleChain;
 import org.thingsboard.server.common.data.rule.RuleChainType;
 import org.thingsboard.server.common.data.rule.RuleNode;
+import org.thingsboard.server.common.data.scheduler.SchedulerJob;
 import org.thingsboard.server.common.data.widget.WidgetTypeDetails;
 import org.thingsboard.server.common.data.widget.WidgetsBundle;
 import org.thingsboard.server.dao.asset.AssetService;
@@ -111,6 +113,7 @@ import org.thingsboard.server.dao.ota.OtaPackageService;
 import org.thingsboard.server.dao.relation.RelationService;
 import org.thingsboard.server.dao.rpc.RpcService;
 import org.thingsboard.server.dao.rule.RuleChainService;
+import org.thingsboard.server.dao.scheduler.SchedulerJobService;
 import org.thingsboard.server.dao.tenant.TbTenantProfileCache;
 import org.thingsboard.server.dao.tenant.TenantProfileService;
 import org.thingsboard.server.dao.tenant.TenantService;
@@ -251,6 +254,9 @@ public abstract class BaseController {
 
     @Autowired
     protected RpcService rpcService;
+
+    @Autowired
+    protected SchedulerJobService schedulerJobService;
 
     @Autowired
     protected TbQueueProducerProvider producerProvider;
@@ -523,6 +529,9 @@ public abstract class BaseController {
                     return;
                 case OTA_PACKAGE:
                     checkOtaPackageId(new OtaPackageId(entityId.getId()), operation);
+                    return;
+                case SCHEDULER_JOB:
+                    checkSchedulerJobId(new SchedulerJobId(entityId.getId()), operation);
                     return;
                 default:
                     throw new IllegalArgumentException("Unsupported entity type: " + entityId.getEntityType());
@@ -810,6 +819,18 @@ public abstract class BaseController {
             checkNotNull(rpc, "RPC with id [" + rpcId + "] is not found");
             accessControlService.checkPermission(getCurrentUser(), Resource.RPC, operation, rpcId, rpc);
             return rpc;
+        } catch (Exception e) {
+            throw handleException(e, false);
+        }
+    }
+
+    SchedulerJob checkSchedulerJobId(SchedulerJobId schedulerJobId, Operation operation) throws ThingsboardException{
+        try {
+            validateId(schedulerJobId, "Incorrect schedulerJobId " + schedulerJobId);
+            SchedulerJob schedulerJob = schedulerJobService.findSchedulerJobById(getCurrentUser().getTenantId(), schedulerJobId);
+            checkNotNull(schedulerJob, "SchedulerJob with id [" + schedulerJobId + "] is not found");
+            accessControlService.checkPermission(getCurrentUser(), Resource.SCHEDULER_JOB, operation, schedulerJobId, schedulerJob);
+            return schedulerJob;
         } catch (Exception e) {
             throw handleException(e, false);
         }

@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thingsboard.server.common.data;
+package org.thingsboard.server.dao.scheduler;
+
+import org.thingsboard.server.common.data.scheduler.SchedulerJob;
+import org.thingsboard.server.dao.Dao;
+import org.thingsboard.server.dao.TenantEntityDao;
 
 /**
- * @author Andrew Shvayka
+ * The Interface SchedulerJob Dao.
  */
-public enum EntityType {
-    TENANT, CUSTOMER, USER, DASHBOARD, ASSET, DEVICE, ALARM, RULE_CHAIN, RULE_NODE, SCHEDULER_JOB, ENTITY_VIEW, WIDGETS_BUNDLE, WIDGET_TYPE, TENANT_PROFILE, DEVICE_PROFILE, API_USAGE_STATE, TB_RESOURCE, OTA_PACKAGE, EDGE, RPC;
+public interface SchedulerJobDao extends Dao<SchedulerJob>, TenantEntityDao {
+
+
 }

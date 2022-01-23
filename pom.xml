@@ -131,6 +131,7 @@
         <testcontainers.version>1.16.0</testcontainers.version>
         <zeroturnaround.version>1.12</zeroturnaround.version>
         <jsass.version>5.10.3</jsass.version>
+        <quartz.version>2.3.2</quartz.version>
     </properties>
 
     <modules>
@@ -1881,6 +1882,11 @@
                 <groupId>io.bit3</groupId>
                 <artifactId>jsass</artifactId>
                 <version>${jsass.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

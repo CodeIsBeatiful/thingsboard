@@ -336,6 +336,10 @@
             <groupId>io.bit3</groupId>
             <artifactId>jsass</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
