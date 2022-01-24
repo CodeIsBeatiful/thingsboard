@@ -28,7 +28,7 @@ public class QuartzSchedulerJob implements Job {
         JobDataMap mergedJobDataMap = jobExecutionContext.getMergedJobDataMap();
         try {
             JsonNode jsonNode = objectMapper.readTree(mergedJobDataMap.get("configuration").toString());
-            System.out.println("job schedule !");
+            System.out.println("job schedule at:"+System.currentTimeMillis());
         } catch (JsonProcessingException e) {
             log.error("job execute failed, schedulerJobId: {}",jobExecutionContext.getJobDetail().getKey().getName());
         }

@@ -8,7 +8,6 @@ import com.google.common.util.concurrent.MoreExecutors;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.spi.MutableTrigger;
 import org.springframework.stereotype.Service;
 import org.thingsboard.common.util.ThingsBoardThreadFactory;
 import org.thingsboard.server.cluster.TbClusterService;
@@ -33,7 +32,6 @@ import org.thingsboard.server.queue.util.TbCoreComponent;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.Calendar;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -295,23 +293,43 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
             ScheduleBuilder scheduleBuilder = null;
             switch (repeatType) {
                 case "DAILY":
-                    scheduleBuilder = CalendarIntervalScheduleBuilder.calendarIntervalSchedule().withIntervalInDays(1);
+                    scheduleBuilder = CalendarIntervalScheduleBuilder.calendarIntervalSchedule().withMisfireHandlingInstructionDoNothing().withIntervalInDays(1);
                     break;
                 case "WEEKLY":
-                    scheduleBuilder = DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule().onDaysOfTheWeek(DailyTimeIntervalScheduleBuilder.MONDAY_THROUGH_FRIDAY);
+                    Set repeatDays = objectMapper.convertValue(repeatJsonNode.get("repeatDays"), Set.class);
+                    scheduleBuilder = DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule().onDaysOfTheWeek(repeatDays);
                     break;
                 case "MONTHLY":
-                    scheduleBuilder = CalendarIntervalScheduleBuilder.calendarIntervalSchedule().withIntervalInMonths(1);
+                    scheduleBuilder = CalendarIntervalScheduleBuilder.calendarIntervalSchedule().withMisfireHandlingInstructionDoNothing().withIntervalInMonths(1);
                     break;
                 case "YEARLY":
-                    scheduleBuilder = CalendarIntervalScheduleBuilder.calendarIntervalSchedule().withIntervalInYears(1);
+                    scheduleBuilder = CalendarIntervalScheduleBuilder.calendarIntervalSchedule().withMisfireHandlingInstructionDoNothing().withIntervalInYears(1);
                     break;
                 case "TIMER":
-                    scheduleBuilder = SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(10).repeatForever();
+                    SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule().repeatForever();
+                    int repeatInterval = repeatJsonNode.get("repeatInterval").asInt();
+                    String timeUnit = repeatJsonNode.get("timeUnit").asText();
+                    switch (timeUnit) {
+                        case "SECONDS":
+                            simpleScheduleBuilder = simpleScheduleBuilder.withIntervalInSeconds(repeatInterval);
+                            break;
+                        case "MINUTES":
+                            simpleScheduleBuilder = simpleScheduleBuilder.withIntervalInMinutes(repeatInterval);
+                            break;
+                        case "HOURS":
+                            simpleScheduleBuilder = simpleScheduleBuilder.withIntervalInHours(repeatInterval);
+                            break;
+                        default:
+                            //must not here
+                            break;
+                    }
+                    scheduleBuilder = simpleScheduleBuilder;
                     break;
                 case "CRON":
+                    //todo
                     break;
                 default:
+                    //must not here
                     break;
             }
             return TriggerBuilder
