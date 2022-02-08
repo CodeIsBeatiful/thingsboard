@@ -12,11 +12,16 @@ import org.springframework.stereotype.Service;
 import org.thingsboard.common.util.ThingsBoardThreadFactory;
 import org.thingsboard.server.cluster.TbClusterService;
 import org.thingsboard.server.common.data.Tenant;
+import org.thingsboard.server.common.data.id.EntityId;
+import org.thingsboard.server.common.data.id.EntityIdFactory;
 import org.thingsboard.server.common.data.id.SchedulerJobId;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.scheduler.SchedulerJob;
 import org.thingsboard.server.common.data.scheduler.SchedulerJobInfo;
+import org.thingsboard.server.common.msg.TbMsg;
+import org.thingsboard.server.common.msg.TbMsgDataType;
+import org.thingsboard.server.common.msg.TbMsgMetaData;
 import org.thingsboard.server.common.msg.queue.ServiceType;
 import org.thingsboard.server.common.msg.queue.TbCallback;
 import org.thingsboard.server.common.msg.queue.TopicPartitionInfo;
@@ -82,6 +87,7 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
         SchedulerFactory factory = new StdSchedulerFactory();
         try {
             jobScheduler = factory.getScheduler();
+            jobScheduler.getContext().put("schedulerService",this);
             jobScheduler.start();
             log.info("Quartz Scheduler Service initialized.");
         } catch (SchedulerException e) {
@@ -252,7 +258,7 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
                 Trigger trigger = getTrigger(schedulerJob);
                 jobScheduler.scheduleJob(detail, Collections.singleton(trigger), true);
             } catch (SchedulerException e) {
-                log.error("schedule job failed", e);
+                log.error("Schedule job failed", e);
             } catch (JsonProcessingException e) {
                 log.error("Scheduler Job configuration is not json", e);
             }
@@ -266,14 +272,11 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
         JobKey jobKey = new JobKey(schedulerJob.getId().toString());
         return JobBuilder
                 .newJob(QuartzSchedulerJob.class)
-                .usingJobData("configuration", objectMapper.writeValueAsString(schedulerJob.getConfiguration()))
                 .withIdentity(jobKey)
                 .build();
     }
 
     private Trigger getTrigger(SchedulerJob schedulerJob) {
-        //todo
-
         JsonNode scheduler = schedulerJob.getScheduler();
         String timezone = scheduler.get("timezone").asText();
         long startTime = scheduler.get("startTime").asLong();
@@ -341,6 +344,60 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
                     .build();
 
         }
+    }
+
+    public void process(SchedulerJobId schedulerJobId) {
+        SchedulerJob schedulerJob = this.schedulerJobService.findSchedulerJobById(TenantId.SYS_TENANT_ID, schedulerJobId);
+        try {
+            if (schedulerJob != null) {
+                JsonNode configuration = schedulerJob.getConfiguration();
+                String msgType = getMsgType(configuration);
+                EntityId entityId = getEntityId(schedulerJob, configuration);
+                TbMsgMetaData tbMsgMetaData = getTbMsgMetaData(schedulerJob, configuration);
+                String msgBody = getMsgBody(configuration);
+                TbMsg tbMsg = TbMsg.newMsg(msgType, entityId, tbMsgMetaData, TbMsgDataType.JSON, msgBody);
+                log.debug("Push message to rule engine tenantId [{}], entityId [{}], tbMsg [{}]", new Object[] { schedulerJob.getTenantId(), schedulerJob.getId(), tbMsg });
+                this.clusterService.pushMsgToRuleEngine(schedulerJob.getTenantId(), schedulerJob.getId(), tbMsg, null);
+            } else {
+                log.warn("Scheduler job id:[{}] can't find", schedulerJobId);
+            }
+        } catch (JsonProcessingException e) {
+            log.error("Scheduler job id [{}] body can't format to string", schedulerJobId, e);
+        }
+
+
+    }
+
+    private String getMsgType(JsonNode configuration) {
+        return configuration.get("msgType").asText();
+    }
+
+    private String getMsgBody(JsonNode configuration) throws JsonProcessingException {
+        return this.objectMapper.writeValueAsString(configuration.get("msgBody"));
+    }
+
+    private EntityId getEntityId(SchedulerJob schedulerJob, JsonNode configuration) {
+        EntityId entityId;
+        JsonNode jsonNode = configuration.get("originatorId");
+        if (jsonNode != null) {
+            entityId = EntityIdFactory.getByTypeAndId(jsonNode.get("entityType").asText(), jsonNode.get("id").asText());
+        } else {
+            entityId = schedulerJob.getId();
+        }
+        return entityId;
+    }
+
+    private TbMsgMetaData getTbMsgMetaData(SchedulerJob schedulerJob, JsonNode configuration) {
+        HashMap<String, String> metaData = new HashMap<>();
+        if (configuration.has("metadata") && !configuration.get("metadata").isNull()) {
+            for (Iterator<Map.Entry<String, JsonNode>> it = configuration.get("metadata").fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> kv = it.next();
+                metaData.put(kv.getKey(), ((JsonNode) kv.getValue()).asText());
+            }
+        } else {
+            metaData.put("jobName", schedulerJob.getName());
+        }
+        return new TbMsgMetaData(metaData);
     }
 
 

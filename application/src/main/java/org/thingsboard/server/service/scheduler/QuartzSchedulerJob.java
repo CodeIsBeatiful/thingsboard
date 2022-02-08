@@ -1,20 +1,16 @@
 package org.thingsboard.server.service.scheduler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
-import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.thingsboard.server.common.data.id.SchedulerJobId;
 
 @Slf4j
 public class QuartzSchedulerJob implements Job {
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
 
     @Autowired
@@ -22,15 +18,21 @@ public class QuartzSchedulerJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        if(schedulerService == null) {
+        if (schedulerService == null) {
             SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         }
-        JobDataMap mergedJobDataMap = jobExecutionContext.getMergedJobDataMap();
         try {
-            JsonNode jsonNode = objectMapper.readTree(mergedJobDataMap.get("configuration").toString());
-            System.out.println("job schedule at:"+System.currentTimeMillis());
-        } catch (JsonProcessingException e) {
-            log.error("job execute failed, schedulerJobId: {}",jobExecutionContext.getJobDetail().getKey().getName());
+            SchedulerService schedulerService = (SchedulerService) jobExecutionContext.getScheduler().getContext().get("schedulerService");
+            String strSchedulerJobId = jobExecutionContext.getJobDetail().getKey().getName();
+            SchedulerJobId schedulerJobId = SchedulerJobId.fromString(strSchedulerJobId);
+            log.trace("triggered job id:[{}]", strSchedulerJobId);
+            schedulerService.process(schedulerJobId);
+        } catch (SchedulerException e) {
+           log.error("can't get scheduler context");
         }
+
+
     }
+
+
 }
