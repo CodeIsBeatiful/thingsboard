@@ -11,11 +11,11 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.stereotype.Service;
 import org.thingsboard.common.util.ThingsBoardThreadFactory;
 import org.thingsboard.server.cluster.TbClusterService;
+import org.thingsboard.server.common.data.Device;
+import org.thingsboard.server.common.data.EntityType;
+import org.thingsboard.server.common.data.OtaPackageInfo;
 import org.thingsboard.server.common.data.Tenant;
-import org.thingsboard.server.common.data.id.EntityId;
-import org.thingsboard.server.common.data.id.EntityIdFactory;
-import org.thingsboard.server.common.data.id.SchedulerJobId;
-import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.scheduler.SchedulerJob;
 import org.thingsboard.server.common.data.scheduler.SchedulerJobInfo;
@@ -25,6 +25,8 @@ import org.thingsboard.server.common.msg.TbMsgMetaData;
 import org.thingsboard.server.common.msg.queue.ServiceType;
 import org.thingsboard.server.common.msg.queue.TbCallback;
 import org.thingsboard.server.common.msg.queue.TopicPartitionInfo;
+import org.thingsboard.server.dao.device.DeviceService;
+import org.thingsboard.server.dao.ota.OtaPackageService;
 import org.thingsboard.server.dao.scheduler.SchedulerJobService;
 import org.thingsboard.server.dao.tenant.TenantService;
 import org.thingsboard.server.gen.transport.TransportProtos;
@@ -59,6 +61,10 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
 
     private final TenantService tenantService;
 
+    private final DeviceService deviceService;
+
+    private final OtaPackageService otaPackageService;
+
     private Scheduler jobScheduler;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -72,11 +78,13 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
     final ConcurrentMap<SchedulerJobId, SchedulerJob> schedulerJobs = new ConcurrentHashMap();
 
 
-    public QuartzSchedulerService(TbClusterService clusterService, SchedulerJobService schedulerJobService, PartitionService partitionService, TenantService tenantService) {
+    public QuartzSchedulerService(TbClusterService clusterService, SchedulerJobService schedulerJobService, PartitionService partitionService, TenantService tenantService, DeviceService deviceService, OtaPackageService otaPackageService) {
         this.clusterService = clusterService;
         this.schedulerJobService = schedulerJobService;
         this.partitionService = partitionService;
         this.tenantService = tenantService;
+        this.deviceService = deviceService;
+        this.otaPackageService = otaPackageService;
     }
 
     @PostConstruct
@@ -351,13 +359,35 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
         try {
             if (schedulerJob != null) {
                 JsonNode configuration = schedulerJob.getConfiguration();
-                String msgType = getMsgType(configuration);
                 EntityId entityId = getEntityId(schedulerJob, configuration);
-                TbMsgMetaData tbMsgMetaData = getTbMsgMetaData(schedulerJob, configuration);
-                String msgBody = getMsgBody(configuration);
-                TbMsg tbMsg = TbMsg.newMsg(msgType, entityId, tbMsgMetaData, TbMsgDataType.JSON, msgBody);
-                log.debug("Push message to rule engine tenantId [{}], entityId [{}], tbMsg [{}]", new Object[] { schedulerJob.getTenantId(), schedulerJob.getId(), tbMsg });
-                this.clusterService.pushMsgToRuleEngine(schedulerJob.getTenantId(), schedulerJob.getId(), tbMsg, null);
+                String type = schedulerJob.getType();
+                if (type.equals("updateFirmware") || type.equals("updateSoftware")) {
+                    //check firmware exist
+                    OtaPackageId otaPackageId = getOtaPackageId(configuration);
+                    OtaPackageInfo otaPackageInfo = this.otaPackageService.findOtaPackageInfoById(TenantId.SYS_TENANT_ID, otaPackageId);
+                    if(otaPackageInfo == null) {
+                        log.warn("Can't find OtaPackage , OtaPackageId:[{}] !", otaPackageId);
+                        return ;
+                    }
+                    if(entityId.getEntityType() != EntityType.DEVICE) {
+                        log.warn("Ota only supports Entity Device now ! , Entity Type:[{}]", entityId.getEntityType().name());
+                        return ;
+                    }
+                    Device device = this.deviceService.findDeviceById(TenantId.SYS_TENANT_ID, (DeviceId) entityId);
+                    if (type.equals("updateFirmware")) {
+                        device.setFirmwareId(otaPackageId);
+                    } else {
+                        device.setSoftwareId(otaPackageId);
+                    }
+                    this.deviceService.saveDevice(device);
+                } else {
+                    TbMsgMetaData tbMsgMetaData = getTbMsgMetaData(schedulerJob, configuration);
+                    String msgType = getMsgType(configuration);
+                    String msgBody = getMsgBody(configuration);
+                    TbMsg tbMsg = TbMsg.newMsg(msgType, entityId, tbMsgMetaData, TbMsgDataType.JSON, msgBody);
+                    log.debug("Push message to rule engine tenantId [{}], entityId [{}], tbMsg [{}]", new Object[] { schedulerJob.getTenantId(), schedulerJob.getId(), tbMsg });
+                    this.clusterService.pushMsgToRuleEngine(schedulerJob.getTenantId(), schedulerJob.getId(), tbMsg, null);
+                }
             } else {
                 log.warn("Scheduler job id:[{}] can't find", schedulerJobId);
             }
@@ -366,6 +396,11 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
         }
 
 
+    }
+
+    private OtaPackageId getOtaPackageId(JsonNode configuration) {
+        JsonNode jsonNode = configuration.get("msgBody");
+        return (OtaPackageId)EntityIdFactory.getByTypeAndId(jsonNode.get("entityType").asText(), jsonNode.get("id").asText());
     }
 
     private String getMsgType(JsonNode configuration) {
