@@ -62,7 +62,7 @@ public final class SchedulerJobEntity extends BaseSqlEntity<SchedulerJob> implem
     private String type;
 
     @Type(type = "json")
-    @Column(name = ModelConstants.SCHEDULER_JOB_SCHEDULER_PROPERTY)
+    @Column(name = ModelConstants.SCHEDULER_JOB_SCHEDULE_PROPERTY)
     private JsonNode scheduler;
 
     @Type(type = "json")
@@ -92,7 +92,7 @@ public final class SchedulerJobEntity extends BaseSqlEntity<SchedulerJob> implem
             this.customerId = schedulerJob.getCustomerId().getId();
         }
         this.type = schedulerJob.getType();
-        this.scheduler = schedulerJob.getScheduler();
+        this.scheduler = schedulerJob.getSchedule();
         this.configuration = schedulerJob.getConfiguration();
         this.additionalInfo = schedulerJob.getAdditionalInfo();
     }
@@ -119,7 +119,7 @@ public final class SchedulerJobEntity extends BaseSqlEntity<SchedulerJob> implem
             schedulerJob.setCustomerId(new CustomerId(customerId));
         }
         schedulerJob.setType(type);
-        schedulerJob.setScheduler(scheduler);
+        schedulerJob.setSchedule(scheduler);
         schedulerJob.setConfiguration(configuration);
         schedulerJob.setAdditionalInfo(additionalInfo);
         return schedulerJob;

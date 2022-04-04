@@ -22,10 +22,10 @@ public class SchedulerJobInfo extends SearchTextBasedWithAdditionalInfo<Schedule
     @NoXss
     private String type;
 
-    private transient JsonNode scheduler;
+    private transient JsonNode schedule;
 
     @JsonIgnore
-    private byte[] schedulerBytes;
+    private byte[] scheduleBytes;
 
     public void setTenantId(TenantId tenantId) {
         this.tenantId = tenantId;
@@ -44,12 +44,12 @@ public class SchedulerJobInfo extends SearchTextBasedWithAdditionalInfo<Schedule
     }
 
     @JsonIgnore
-    public void setSchedulerBytes(byte[] schedulerBytes) {
-        this.schedulerBytes = schedulerBytes;
+    public void setScheduleBytes(byte[] schedulerBytes) {
+        this.scheduleBytes = schedulerBytes;
     }
 
     public String toString() {
-        return "SchedulerJobInfo(super=" + super.toString() + ", tenantId=" + getTenantId() + ", customerId=" + getCustomerId() + ", name=" + getName() + ", type=" + getType() + ", schedule=" + getScheduler() + ", scheduleBytes=" + Arrays.toString(getSchedulerBytes()) + ")";
+        return "SchedulerJobInfo(super=" + super.toString() + ", tenantId=" + getTenantId() + ", customerId=" + getCustomerId() + ", name=" + getName() + ", type=" + getType() + ", schedule=" + getSchedule() + ", scheduleBytes=" + Arrays.toString(getScheduleBytes()) + ")";
     }
 
 
@@ -65,8 +65,8 @@ public class SchedulerJobInfo extends SearchTextBasedWithAdditionalInfo<Schedule
         return this.type;
     }
 
-    public byte[] getSchedulerBytes() {
-        return this.schedulerBytes;
+    public byte[] getScheduleBytes() {
+        return this.scheduleBytes;
     }
 
     public SchedulerJobInfo() {}
@@ -81,7 +81,7 @@ public class SchedulerJobInfo extends SearchTextBasedWithAdditionalInfo<Schedule
         this.customerId = schedulerJobInfo.getCustomerId();
         this.name = schedulerJobInfo.getName();
         this.type = schedulerJobInfo.getType();
-        setScheduler(schedulerJobInfo.getScheduler());
+        setSchedule(schedulerJobInfo.getSchedule());
     }
 
     public String getSearchText() {
@@ -92,12 +92,12 @@ public class SchedulerJobInfo extends SearchTextBasedWithAdditionalInfo<Schedule
         return this.name;
     }
 
-    public JsonNode getScheduler() {
-        return SearchTextBasedWithAdditionalInfo.getJson(() -> this.scheduler, () -> this.schedulerBytes);
+    public JsonNode getSchedule() {
+        return SearchTextBasedWithAdditionalInfo.getJson(() -> this.schedule, () -> this.scheduleBytes);
     }
 
-    public void setScheduler(JsonNode data) {
-        setJson(data, json -> this.scheduler = json, bytes -> this.schedulerBytes = bytes);
+    public void setSchedule(JsonNode data) {
+        setJson(data, json -> this.schedule = json, bytes -> this.scheduleBytes = bytes);
     }
 
     @JsonIgnore

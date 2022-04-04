@@ -36,7 +36,7 @@ import { DeviceProfileModule } from './device-profile/device-profile.module';
 import { ApiUsageModule } from '@home/pages/api-usage/api-usage.module';
 import { EdgeModule } from '@home/pages/edge/edge.module';
 import { OtaUpdateModule } from '@home/pages/ota-update/ota-update.module';
-
+import { SchedulerJobModule } from '@home/pages/scheduler-job/scheduler-job.module';
 @NgModule({
   exports: [
     AdminModule,
@@ -56,6 +56,7 @@ import { OtaUpdateModule } from '@home/pages/ota-update/ota-update.module';
     AuditLogModule,
     ApiUsageModule,
     OtaUpdateModule,
+    SchedulerJobModule,
     UserModule
   ],
   providers: [

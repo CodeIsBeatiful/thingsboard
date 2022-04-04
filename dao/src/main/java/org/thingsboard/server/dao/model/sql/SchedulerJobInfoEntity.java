@@ -25,7 +25,6 @@ import org.hibernate.annotations.TypeDef;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.SchedulerJobId;
 import org.thingsboard.server.common.data.id.TenantId;
-import org.thingsboard.server.common.data.scheduler.SchedulerJob;
 import org.thingsboard.server.common.data.scheduler.SchedulerJobInfo;
 import org.thingsboard.server.dao.model.BaseSqlEntity;
 import org.thingsboard.server.dao.model.ModelConstants;
@@ -63,8 +62,8 @@ public final class SchedulerJobInfoEntity extends BaseSqlEntity<SchedulerJobInfo
     private String type;
 
     @Type(type = "json")
-    @Column(name = ModelConstants.SCHEDULER_JOB_SCHEDULER_PROPERTY)
-    private JsonNode scheduler;
+    @Column(name = ModelConstants.SCHEDULER_JOB_SCHEDULE_PROPERTY)
+    private JsonNode schedule;
 
     @Type(type = "json")
     @Column(name = ModelConstants.SCHEDULER_JOB_ADDITIONAL_INFO_PROPERTY)
@@ -88,7 +87,7 @@ public final class SchedulerJobInfoEntity extends BaseSqlEntity<SchedulerJobInfo
             this.customerId = schedulerJobInfo.getCustomerId().getId();
         }
         this.type = schedulerJobInfo.getType();
-        this.scheduler = schedulerJobInfo.getScheduler();
+        this.schedule = schedulerJobInfo.getSchedule();
         this.additionalInfo = schedulerJobInfo.getAdditionalInfo();
     }
 
@@ -114,7 +113,7 @@ public final class SchedulerJobInfoEntity extends BaseSqlEntity<SchedulerJobInfo
             schedulerJobInfo.setCustomerId(new CustomerId(customerId));
         }
         schedulerJobInfo.setType(type);
-        schedulerJobInfo.setScheduler(scheduler);
+        schedulerJobInfo.setSchedule(schedule);
         schedulerJobInfo.setAdditionalInfo(additionalInfo);
         return schedulerJobInfo;
     }

@@ -1,0 +1,22 @@
+<div fxLayout="column" fxLayoutGap="8px" [formGroup]="configurationFormGroup">
+  <section fxLayout="column" [ngSwitch]="jobType" >
+    <ng-template [ngSwitchCase]="'updateFirmware'">
+      <tb-scheduler-job-ota-update
+        formControlName="configuration"
+        [jobType]="'updateFirmware'" required>
+      </tb-scheduler-job-ota-update>
+    </ng-template>
+    <ng-template [ngSwitchCase]="'updateSoftware'">
+      <tb-scheduler-job-ota-update
+        formControlName="configuration"
+        [jobType]="'updateSoftware'" required>
+      </tb-scheduler-job-ota-update>
+    </ng-template>
+    <ng-template [ngSwitchCase]="'updateAttributes'">
+      <tb-scheduler-job-attribute-update
+        formControlName="configuration"
+        [jobType]="'updateAttributes'" required>
+      </tb-scheduler-job-attribute-update>
+    </ng-template>
+  </section>
+</div>

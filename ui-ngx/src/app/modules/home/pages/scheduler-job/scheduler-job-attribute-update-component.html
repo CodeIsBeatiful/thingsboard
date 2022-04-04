@@ -1,0 +1,18 @@
+<div fxLayout="column" fxLayoutGap="8px" [formGroup]="attributeUpdateForm">
+  <section fxLayout="column">
+    <tb-entity-select
+      required
+      useAliasEntityTypes="true"
+      formControlName="originatorId">
+    </tb-entity-select>
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Server attributes
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <tb-attribute-key-value-table formControlName="msgBody" >
+      </tb-attribute-key-value-table>
+    </mat-expansion-panel>
+  </section>
+</div>

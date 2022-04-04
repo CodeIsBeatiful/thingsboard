@@ -1,0 +1,63 @@
+<div class="tb-details-buttons" fxLayout.xs="column">
+  <button mat-raised-button color="primary" fxFlex.xs
+          [disabled]="(isLoading$ | async)"
+          (click)="onEntityAction($event, 'delete')"
+          [fxShow]="!hideDelete() && !isEdit">
+    {{ 'scheduler-job.delete' | translate }}
+  </button>
+  <div fxLayout="row" fxLayout.xs="column">
+    <button mat-raised-button
+            ngxClipboard
+            (cbOnSuccess)="onSchedulerJobIdCopied()"
+            [cbContent]="entity?.id?.id"
+            [fxShow]="!isEdit">
+      <mat-icon svgIcon="mdi:clipboard-arrow-left"></mat-icon>
+      <span translate>scheduler-job.copyId</span>
+    </button>
+  </div>
+</div>
+<div class="mat-padding" fxLayout="column" fxLayoutGap="8px">
+  <form [formGroup]="entityForm">
+    <fieldset [disabled]="(isLoading$ | async) || !isEdit" fxLayout="column">
+      <mat-form-field class="mat-block">
+        <mat-label translate>scheduler-job.name</mat-label>
+        <input matInput formControlName="name" type="text" required>
+        <mat-error *ngIf="entityForm.get('name').hasError('required')">
+          {{ 'scheduler-job.name-required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="entityForm.get('name').hasError('maxlength')">
+          {{ 'scheduler-job.name-max-length' | translate }}
+        </mat-error>
+      </mat-form-field>
+      <div formGroupName="additionalInfo">
+        <mat-form-field class="mat-block">
+          <mat-label translate>scheduler-job.description</mat-label>
+          <textarea matInput formControlName="description" rows="2"></textarea>
+        </mat-form-field>
+      </div>
+      <mat-tab-group [(selectedIndex)]="selectedTab">
+        <mat-tab *ngIf="entity" label="{{ 'scheduler-job.configuration' | translate }}" #configurationTab="matTab">
+          <mat-form-field class="mat-block">
+            <mat-label translate>scheduler-job.type</mat-label>
+            <mat-select formControlName="type" required>
+              <mat-option *ngFor="let jobType of jobTypes" [value]="jobType">
+                {{ schedulerJobTypeTranslationMap.get(jobType) | translate }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="entityForm.get('type').hasError('required')">
+              {{ 'scheduler-job.type-required' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <tb-scheduler-job-configuration required
+            formControlName="configuration"
+            [jobType]="entityForm.get('type').value">
+          </tb-scheduler-job-configuration>
+        </mat-tab>
+        <mat-tab *ngIf="entity" label="{{ 'scheduler-job.schedule' | translate }}" #scheduleTab="matTab">
+          <tb-scheduler-job-schedule required formControlName="schedule">
+          </tb-scheduler-job-schedule>
+        </mat-tab>
+      </mat-tab-group>
+    </fieldset>
+  </form>
+</div>

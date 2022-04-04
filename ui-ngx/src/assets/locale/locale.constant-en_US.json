@@ -2434,6 +2434,9 @@
       "version-max-length": "Version should be less than 256",
       "warning-after-save-no-edit": "Once the package is uploaded, you will not be able to modify title, version, device profile and package type."
     },
+    "scheduler-job": {
+        "scheduler-jobs": "Scheduler jobs"
+    },
     "position": {
         "top": "Top",
         "bottom": "Bottom",

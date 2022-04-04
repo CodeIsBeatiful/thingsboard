@@ -16,7 +16,7 @@
 
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import {merge, Observable, of, Subject} from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, share, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@core/core.state';
@@ -31,7 +31,7 @@ import { OtaPackageInfo, OtaUpdateTranslation, OtaUpdateType } from '@shared/mod
 import { OtaPackageService } from '@core/http/ota-package.service';
 import { PageLink } from '@shared/models/page/page-link';
 import { Direction } from '@shared/models/page/sort-order';
-import { emptyPageData } from "@shared/models/page/page-data";
+import { emptyPageData } from '@shared/models/page/page-data';
 
 @Component({
   selector: 'tb-ota-package-autocomplete',
@@ -49,11 +49,29 @@ export class OtaPackageAutocompleteComponent implements ControlValueAccessor, On
 
   modelValue: string | EntityId | null;
 
-  @Input()
-  type = OtaUpdateType.FIRMWARE;
+  private otaUpdateType: OtaUpdateType = OtaUpdateType.FIRMWARE;
+
+  get type(): OtaUpdateType {
+    return this.otaUpdateType;
+  }
 
   @Input()
-  deviceProfileId: string;
+  set type(value ) {
+    this.otaUpdateType = value ? value : OtaUpdateType.FIRMWARE;
+    this.reset();
+  }
+
+  private deviceProfile: string;
+
+  get deviceProfileId(): string {
+    return this.deviceProfile;
+  }
+
+  @Input()
+  set deviceProfileId(value: string) {
+    this.deviceProfile = value;
+    this.reset();
+  }
 
   @Input()
   labelText: string;
@@ -85,6 +103,7 @@ export class OtaPackageAutocompleteComponent implements ControlValueAccessor, On
   searchText = '';
 
   private dirty = false;
+  private cleanFilteredPackages: Subject<Array<OtaPackageInfo>> = new Subject();
 
   private propagateChange = (v: any) => { };
 
@@ -107,7 +126,7 @@ export class OtaPackageAutocompleteComponent implements ControlValueAccessor, On
   }
 
   ngOnInit() {
-    this.filteredPackages = this.otaPackageFormGroup.get('packageId').valueChanges
+    const getPackages = this.otaPackageFormGroup.get('packageId').valueChanges
       .pipe(
         debounceTime(150),
         tap(value => {
@@ -123,19 +142,25 @@ export class OtaPackageAutocompleteComponent implements ControlValueAccessor, On
           }
         }),
         map(value => value ? (typeof value === 'string' ? value : value.title) : ''),
-        distinctUntilChanged(),
         switchMap(name => this.fetchPackages(name)),
         share()
       );
+
+    this.filteredPackages = merge(this.cleanFilteredPackages, getPackages);
   }
 
   ngAfterViewInit(): void {
   }
 
+  ngOnDestroy() {
+    this.cleanFilteredPackages.complete();
+    this.cleanFilteredPackages = null;
+  }
+
   getCurrentEntity(): BaseData<EntityId> | null {
-    const currentRuleChain = this.otaPackageFormGroup.get('packageId').value;
-    if (currentRuleChain && typeof currentRuleChain !== 'string') {
-      return currentRuleChain as BaseData<EntityId>;
+    const currentPackage = this.otaPackageFormGroup.get('packageId').value;
+    if (currentPackage && typeof currentPackage !== 'string') {
+      return currentPackage as OtaPackageInfo;
     } else {
       return null;
     }
@@ -197,6 +222,7 @@ export class OtaPackageAutocompleteComponent implements ControlValueAccessor, On
   }
 
   reset() {
+    this.cleanFilteredPackages.next([]);
     this.otaPackageFormGroup.get('packageId').patchValue('', {emitEvent: false});
   }
 
@@ -218,14 +244,14 @@ export class OtaPackageAutocompleteComponent implements ControlValueAccessor, On
       direction: Direction.ASC
     });
     return this.otaPackageService.getOtaPackagesInfoByDeviceProfileId(pageLink, this.deviceProfileId, this.type,
-                                                                {ignoreLoading: true}).pipe(
+      {ignoreLoading: true}).pipe(
       catchError(() => of(emptyPageData<OtaPackageInfo>())),
       map((data) => data && data.data.length ? data.data : null)
     );
   }
 
   clear() {
-    this.otaPackageFormGroup.get('packageId').patchValue('', {emitEvent: false});
+    this.otaPackageFormGroup.get('packageId').patchValue('');
     setTimeout(() => {
       this.packageInput.nativeElement.blur();
       this.packageInput.nativeElement.focus();

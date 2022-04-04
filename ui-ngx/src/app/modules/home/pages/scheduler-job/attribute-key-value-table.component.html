@@ -1,0 +1,42 @@
+<section fxLayout="column" class="tb-attribute-kv-table" [formGroup]="kvListFormGroup">
+  <div class="body">
+    <div class="row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px"
+         formArrayName="keyVals"
+         *ngFor="let keyValControl of keyValsFormArray().controls; let $index = index">
+      <mat-form-field fxFlex floatLabel="always">
+        <mat-label translate>attribute.key</mat-label>
+        <input [formControl]="keyValControl.get('key')" matInput required
+               placeholder="{{ keyText | translate }}"/>
+        <mat-error *ngIf="keyValControl.get('key').hasError('required')">
+          {{ 'attribute.key-required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="keyValControl.get('key').hasError('maxlength')">
+          {{ 'attribute.key-max-length' | translate }}
+        </mat-error>
+      </mat-form-field>
+      <tb-value-input [formControl]="keyValControl.get('value')" requiredText="attribute.value-required">
+      </tb-value-input>
+      <button mat-button mat-icon-button color="primary"
+              [fxShow]="!disabled"
+              type="button"
+              (click)="removeKeyVal($index)"
+              [disabled]="isLoading$ | async"
+              matTooltip="{{ 'tb.key-val.remove-entry' | translate }}"
+              matTooltipPosition="above">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div style="margin-top: 8px;">
+    <button mat-button mat-raised-button color="primary"
+            [fxShow]="!disabled"
+            [disabled]="isLoading$ | async"
+            (click)="addKeyVal()"
+            type="button"
+            matTooltip="{{ 'tb.key-val.add-entry' | translate }}"
+            matTooltipPosition="above">
+      <mat-icon>add</mat-icon>
+      {{ 'action.add' | translate }}
+    </button>
+  </div>
+</section>

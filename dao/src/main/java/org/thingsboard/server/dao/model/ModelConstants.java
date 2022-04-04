@@ -528,7 +528,7 @@ public class ModelConstants {
     public static final String SCHEDULER_JOB_NAME_PROPERTY = "name";
     public static final String SCHEDULER_JOB_TYPE_PROPERTY = "type";
     public static final String SCHEDULER_JOB_ADDITIONAL_INFO_PROPERTY = ADDITIONAL_INFO_PROPERTY;
-    public static final String SCHEDULER_JOB_SCHEDULER_PROPERTY = "scheduler";
+    public static final String SCHEDULER_JOB_SCHEDULE_PROPERTY = "schedule";
     public static final String SCHEDULER_JOB_CONFIGURATION_PROPERTY = "configuration";
 
     /**

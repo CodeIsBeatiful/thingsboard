@@ -1,0 +1,22 @@
+<div fxLayout="column" class="tb-entity-select" [formGroup]="entitySelectFormGroup">
+  <section fxLayout="column">
+    <mat-radio-group formControlName="entityType" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+      <mat-radio-button *ngFor="let entityType of allowedEntityTypes"
+                        [value]="entityType">{{ entityTypeTranslations.get(entityType).type | translate }}</mat-radio-button>
+    </mat-radio-group>
+  </section>
+  <tb-entity-autocomplete
+    fxFlex
+    *ngIf="entitySelectFormGroup.get('entityType').value === EntityType.DEVICE"
+    [required]="required"
+    [entityType]="EntityType.DEVICE"
+    (entityChanged)="updateRef($event)"
+    formControlName="entityId">
+  </tb-entity-autocomplete>
+  <tb-device-profile-autocomplete
+    [ngStyle]="{display: entitySelectFormGroup.get('entityType').value === EntityType.DEVICE_PROFILE ? 'block' : 'none'}"
+    [selectDefaultProfile]="false"
+    [required]="required"
+    formControlName="targetProfileId">
+  </tb-device-profile-autocomplete>
+</div>

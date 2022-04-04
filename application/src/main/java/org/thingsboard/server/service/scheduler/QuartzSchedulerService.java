@@ -285,12 +285,12 @@ public class QuartzSchedulerService extends TbApplicationEventListener<Partition
     }
 
     private Trigger getTrigger(SchedulerJob schedulerJob) {
-        JsonNode scheduler = schedulerJob.getScheduler();
-        String timezone = scheduler.get("timezone").asText();
+        JsonNode scheduler = schedulerJob.getSchedule();
+        String timezone = scheduler.get("timezone").asText();//TODO
         long startTime = scheduler.get("startTime").asLong();
         JsonNode repeatJsonNode = scheduler.get("repeat");
         TriggerKey triggerKey = new TriggerKey(schedulerJob.getId().toString());
-        if (repeatJsonNode == null) {
+        if (repeatJsonNode == null || repeatJsonNode.get("type") == null) {
             return TriggerBuilder
                     .newTrigger()
                     .startAt(new Date(startTime))

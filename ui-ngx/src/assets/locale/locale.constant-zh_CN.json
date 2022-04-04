@@ -2002,6 +2002,28 @@
     "version-tag-hint": "自定义标签应与您设备报告的软件包版本相匹配。",
     "warning-after-save-no-edit": "上传包后，您将无法修改标题、版本、设备配置文件和包类型。"
   },
+  "scheduler-job": {
+    "scheduler-jobs": "调度任务",
+    "name": "名称",
+    "type": "类型",
+    "search": "搜索",
+    "copyId": "复制任务ID",
+    "idCopiedMessage": "任务ID已被复制到剪贴板",
+    "add": "增加任务",
+    "delete": "删除任务",
+    "description": "描述",
+    "scheduler-job-details": "详情",
+    "name-required": "名称必填。",
+    "name-max-length": "名称长度必须少于256个字符。",
+    "schedule": "调度",
+    "configuration": "配置",
+    "types": {
+      "update-attributes": "属性更新",
+      "rpc-to-device": "设备RPC请求",
+      "update-firmware": "固件更新",
+      "update-software": "软件更新"
+    }
+  },
   "position": {
     "bottom": "底部",
     "left": "左侧",
