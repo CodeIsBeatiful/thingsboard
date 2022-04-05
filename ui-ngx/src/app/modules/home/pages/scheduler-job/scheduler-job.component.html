@@ -36,7 +36,7 @@
         </mat-form-field>
       </div>
       <mat-tab-group [(selectedIndex)]="selectedTab">
-        <mat-tab *ngIf="entity" label="{{ 'scheduler-job.configuration' | translate }}" #configurationTab="matTab">
+        <mat-tab *ngIf="entity" label="{{ 'scheduler-job.configuration-tab' | translate }}" #configurationTab="matTab">
           <mat-form-field class="mat-block">
             <mat-label translate>scheduler-job.type</mat-label>
             <mat-select formControlName="type" required>
@@ -53,7 +53,7 @@
             [jobType]="entityForm.get('type').value">
           </tb-scheduler-job-configuration>
         </mat-tab>
-        <mat-tab *ngIf="entity" label="{{ 'scheduler-job.schedule' | translate }}" #scheduleTab="matTab">
+        <mat-tab *ngIf="entity" label="{{ 'scheduler-job.schedule-tab' | translate }}" #scheduleTab="matTab">
           <tb-scheduler-job-schedule required formControlName="schedule">
           </tb-scheduler-job-schedule>
         </mat-tab>

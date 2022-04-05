@@ -46,9 +46,9 @@ export class SchedulerJobScheduleComponent implements OnInit, OnDestroy, Control
               private fb: FormBuilder) {
     this.repeatTypes = RepeatTypes;
     this.scheduleFormGroup = this.fb.group({
-      timezone: [getDefaultTimezone(), Validators.required],
-      startTime: [new Date(), Validators.required],
-      repeat: [false, []]
+      timezone: [null, [Validators.required]],
+      startTime: [null, [Validators.required]],
+      repeat: [false, [Validators.required]]
     });
   }
 
@@ -112,6 +112,8 @@ export class SchedulerJobScheduleComponent implements OnInit, OnDestroy, Control
 
   writeValue(value: Schedule): void {
     this.destroyFormObservable();
+    this.scheduleFormGroup.removeControl('repeatType');
+    this.scheduleFormGroup.removeControl('endTime');
     if (value != null) {
       this.modelValue = value;
       if (value.repeat) {
@@ -135,6 +137,8 @@ export class SchedulerJobScheduleComponent implements OnInit, OnDestroy, Control
           this.scheduleFormGroup.addControl('weekly',
             this.fb.array(daysOfWeek, this.validateDayOfWeeks));
         }
+        // fix some select not disable
+        this.setDisabledState(this.disabled);
         this.initRepeatTypeObservable();
       } else {
         this.scheduleFormGroup.patchValue({
@@ -154,9 +158,7 @@ export class SchedulerJobScheduleComponent implements OnInit, OnDestroy, Control
       this.scheduleFormGroup.patchValue({
         timezone: timeZone,
         startTime: date,
-        repeat: false,
-        repeatType: null,
-        endTime: null
+        repeat: false
       }, {emitEvent: false});
     }
     this.initFormObservable();

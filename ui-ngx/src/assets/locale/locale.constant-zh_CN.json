@@ -2015,13 +2015,37 @@
     "scheduler-job-details": "详情",
     "name-required": "名称必填。",
     "name-max-length": "名称长度必须少于256个字符。",
-    "schedule": "调度",
-    "configuration": "配置",
+    "schedule-tab": "调度",
+    "configuration-tab": "配置",
     "types": {
       "update-attributes": "属性更新",
       "rpc-to-device": "设备RPC请求",
       "update-firmware": "固件更新",
       "update-software": "软件更新"
+    },
+    "configuration": {
+      "target": "目标"
+    },
+    "schedule": {
+      "start-time": "开始时间",
+      "start-time-required": "开始时间必填。",
+      "show-repeat": "显示重复",
+      "repeats": "重复类型",
+      "repeat-type-required": "重复类型必填。",
+      "repeat-every": "重复（每次）",
+      "repeat-interval": "重复间隔",
+      "repeat-every-time-unit": "重复单位",
+      "repeat-interval-required": "重复间隔必填。",
+      "repeat-on": "重复（在）",
+      "end-time": "结束时间",
+      "end-time-required": "结束时间必填。"
+    },
+    "repeat-types": {
+      "daily": "日",
+      "weekly": "星期",
+      "monthly": "月",
+      "yearly": "年",
+      "timer": "定时"
     }
   },
   "position": {

@@ -16,30 +16,33 @@
     </mat-form-field>
   </section>
   <mat-checkbox formControlName="repeat" style="display: block; padding-bottom: 16px;">
-    {{ 'scheduler-job.show-repeat' | translate }}
+    {{ 'scheduler-job.schedule.show-repeat' | translate }}
   </mat-checkbox>
   <section fxLayout="column" *ngIf="scheduleFormGroup.get('repeat').value">
     <mat-form-field class="mat-block">
-      <mat-label translate>scheduler-job.scheduler.repeats</mat-label>
+      <mat-label translate>scheduler-job.schedule.repeats</mat-label>
       <mat-select formControlName="repeatType"  style="color:rgb(255, 255, 255);font-weight: 500;">
         <mat-option *ngFor="let repeatType of repeatTypes" [value]="repeatType">
           {{ repeatTypeTranslationMap.get(repeatType) | translate }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="scheduleFormGroup.get('repeatType').hasError('required')">
-        {{ 'scheduler-job.repeat-type-required' | translate }}
+        {{ 'scheduler-job.schedule.repeat-type-required' | translate }}
       </mat-error>
     </mat-form-field>
     <div formGroupName="timer" fxLayout="column" *ngIf="scheduleFormGroup.get('repeatType').value === 'TIMER'">
-      <mat-label translate>scheduler-job.repeat-every</mat-label>
+      <mat-label translate>scheduler-job.schedule.repeat-every</mat-label>
       <div fxLayout="row" fxLayoutGap.gt-xs="8px" fxLayoutGap.sm="8px"
            fxLayout.xs="column" fxLayout.md="column">
         <mat-form-field class="mat-block" fxFlex="50">
-          <mat-label translate>scheduler-job.repeat-interval</mat-label>
+          <mat-label translate>scheduler-job.schedule.repeat-interval</mat-label>
           <input matInput type="number" min="0" formControlName="repeatInterval" required>
+          <mat-error *ngIf="scheduleFormGroup.get('timer.repeatInterval').hasError('required')">
+            {{ 'scheduler-job.schedule.repeat-interval-required' | translate }}
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="mat-block" fxFlex="50">
-          <mat-label translate>scheduler-job.repeat-every-time-unit</mat-label>
+          <mat-label translate>scheduler-job.schedule.repeat-every-time-unit</mat-label>
           <mat-select formControlName="timeUnit">
             <mat-option *ngFor="let timeUnit of timeUnits" [value]="timeUnit">
               {{ timeUnitTranslations.get(timeUnit) | translate }}
@@ -49,7 +52,7 @@
       </div>
     </div>
     <div formArrayName="weekly" fxLayout="column" *ngIf="scheduleFormGroup.get('repeatType').value === 'WEEKLY'">
-      <mat-label translate>scheduler-job.repeat.repeat-on</mat-label>
+      <mat-label translate>scheduler-job.schedule.repeat-on</mat-label>
       <span style="height: 16px;"></span>
       <div fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="16px">
         <div fxLayout="row" fxLayoutGap="16px">
@@ -66,10 +69,13 @@
     </div >
     <section fxLayout="column">
       <mat-form-field class="mat-block">
-        <mat-label translate>scheduler-job.schedule-end-time</mat-label>
+        <mat-label translate>scheduler-job.schedule.end-time</mat-label>
         <mat-datetimepicker-toggle [for]="endTimePicker" matPrefix></mat-datetimepicker-toggle>
         <mat-datetimepicker #endTimePicker type="date" openOnFocus="true"></mat-datetimepicker>
         <input required matInput formControlName="endTime" [matDatetimepicker]="endTimePicker">
+        <mat-error *ngIf="scheduleFormGroup.get('endTime').hasError('required')">
+          {{ 'scheduler-job.schedule.end-time-required' | translate }}
+        </mat-error>
       </mat-form-field>
     </section>
   </section>

@@ -2435,7 +2435,50 @@
       "warning-after-save-no-edit": "Once the package is uploaded, you will not be able to modify title, version, device profile and package type."
     },
     "scheduler-job": {
-        "scheduler-jobs": "Scheduler jobs"
+      "scheduler-jobs": "Scheduler jobs",
+      "name": "Name",
+      "type": "Type",
+      "search": "Search",
+      "copyId": "Copy Scheduler job Id",
+      "idCopiedMessage": "Resource Scheduler job Id has been copied to clipboard",
+      "add": "Add Scheduler job",
+      "delete": "Delete Scheduler job",
+      "description": "Description",
+      "scheduler-job-details": "Scheduler Job Details",
+      "name-required": "Name is required.",
+      "name-max-length": "Name should be less than 256.",
+      "schedule-tab": "Schedule",
+      "configuration-tab": "Configuration",
+      "types": {
+        "update-attributes": "Update attributes",
+        "rpc-to-device": "Rpc to Device",
+        "update-firmware": "Update firmware",
+        "update-software": "update software"
+      },
+      "configuration": {
+        "target": "Target"
+      },
+      "schedule": {
+        "start-time": "Start time",
+        "start-time-required": "Start time required.",
+        "show-repeat": "Show repeat",
+        "repeats": "repeats",
+        "repeat-type-required": "Repeat type required.",
+        "repeat-every": "Repeat every",
+        "repeat-interval": "Repeat interval",
+        "repeat-every-time-unit": "Repeat every time unit",
+        "repeat-interval-required": "Repeat interval required.",
+        "repeat-on": "Repeat on",
+        "end-time": "End time",
+        "end-time-required": "End time required."
+      },
+      "repeat-types": {
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "timer": "Timer"
+      }
     },
     "position": {
         "top": "Top",
