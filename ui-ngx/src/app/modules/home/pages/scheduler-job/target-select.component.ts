@@ -15,7 +15,6 @@ import {Device} from '@shared/models/device.models';
 @Component({
   selector: 'tb-target-select',
   templateUrl: './target-select.component.html',
-  styleUrls: ['./target-select.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => TargetSelectComponent),
