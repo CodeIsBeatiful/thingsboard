@@ -87,6 +87,9 @@
               ]
             },
             "scripts": [
+              "node_modules/babylonjs/babylon.js",
+              "node_modules/babylonjs-gui/babylon.gui.js",
+              "node_modules/babylonjs-loaders/babylonjs.loaders.js",
               "node_modules/tinycolor2/dist/tinycolor-min.js",
               "node_modules/split.js/dist/split.min.js",
               "node_modules/systemjs/dist/system.min.js",

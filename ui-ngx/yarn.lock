@@ -2623,6 +2623,31 @@ babel-plugin-polyfill-regenerator@^0.2.2:
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.2.4"
 
+babylonjs-gltf2interface@^5.5.5:
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/babylonjs-gltf2interface/-/babylonjs-gltf2interface-5.5.5.tgz#329caea6aeed9bc363e33d1615cf925f1c4ec368"
+  integrity sha512-xlJdfqNmrkyHwc/7Pm0wcRFlOIaszvQmnf6DZqjG1ClkPvbzKcULv95r8BAnagF5Khb1LzUXWq99FyaS6I+1CQ==
+
+babylonjs-gui@5.5.5:
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/babylonjs-gui/-/babylonjs-gui-5.5.5.tgz#8ccc360ee8382b5078bafdba66850a1398c4e319"
+  integrity sha512-nB/vfCUshXf6QcSoT1meTuT+RclfgtDytQF8PH268bbnGtPZMcyI1iqQWMuVa4HLjGsv8wA1syie9xkn8Q3iAA==
+  dependencies:
+    babylonjs "^5.5.5"
+
+babylonjs-loaders@5.5.5:
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/babylonjs-loaders/-/babylonjs-loaders-5.5.5.tgz#1f0753bc5d90e327065d6b7ec313cfdffaa824f2"
+  integrity sha512-/0/XzCX81UxudbXU1a9iAo0GMSFtOnrUWJ7aovM1ZUvMo0WoA2j4pDiBtn2C8kegcnzf+qbyWfGJmNYhBbBU3g==
+  dependencies:
+    babylonjs "^5.5.5"
+    babylonjs-gltf2interface "^5.5.5"
+
+babylonjs@5.5.5, babylonjs@^5.5.5:
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/babylonjs/-/babylonjs-5.5.5.tgz#eaded819d63c96ebf2749d569db0b668bb758ab8"
+  integrity sha512-zXeNFt3dadYDBQTQhQUtYuK6bF7d35zojJzYuynW6PwnEcw/m3+trneswBEVKycsY907hOXrD+TXjH8yCoBw/A==
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
