@@ -1,0 +1,82 @@
+/**
+ * Copyright © 2016-2022 The Thingsboard Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import '_theming';
+
+
+$mat-tb-primary: map_merge($mat-indigo, (
+        500: #305680,
+        600: #527dad,
+        A100: #a7c1de
+));
+
+$mat-tb-accent: map_merge($mat-deep-orange, (
+));
+
+$tb-primary-colors: map_merge($mat-{{primary-palette}}, ({{primary-colors}}));
+$tb-accent-colors: map_merge($mat-{{accent-palette}}, ({{accent-colors}}));
+
+$backgroundContrastColor: map-get($tb-primary-colors, 900);
+$backgroundColor: map-get($tb-primary-colors, 500);
+
+$tb-primary-palette-colors: map_merge($tb-primary-colors, (
+  500: $backgroundContrastColor
+));
+
+$tb-background-palette-colors: map_merge($tb-primary-palette-colors, (
+  800: $backgroundColor
+));
+
+$tb-primary: mat-palette($tb-primary-palette-colors);
+$tb-accent: mat-palette($tb-accent-colors);
+
+$tb-dark-theme-background: (
+  status-bar: black,
+  app-bar:    map_get($tb-background-palette-colors, 900),
+  background: map_get($tb-background-palette-colors, 800),
+  hover:      rgba(white, 0.04),
+  card:       map_get($tb-background-palette-colors, 800),
+  dialog:     map_get($tb-background-palette-colors, 800),
+  disabled-button: rgba(white, 0.12),
+  raised-button: map-get($tb-background-palette-colors, 50),
+  focused-button: $light-focused,
+  selected-button: map_get($tb-background-palette-colors, 900),
+  selected-disabled-button: map_get($tb-background-palette-colors, 800),
+  disabled-button-toggle: black,
+  unselected-chip: map_get($tb-background-palette-colors, 700),
+  disabled-list-option: black,
+  tooltip: map_get($mat-grey, 700),
+);
+
+@function get-tb-dark-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+  @return (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+    is-dark: true,
+    foreground: $mat-light-theme-foreground,
+    background: $tb-dark-theme-background,
+  );
+}
+
+$tb-theme: get-tb-dark-theme(
+    $tb-primary,
+    $tb-accent
+);
+
+.tb-dark {
+  @include angular-material-theme($tb-theme);
+}

@@ -32,6 +32,7 @@ import { ResourcesLibraryTableConfigResolver } from '@home/pages/admin/resource/
 import { EntityDetailsPageComponent } from '@home/components/entity/entity-details-page.component';
 import { entityDetailsPageBreadcrumbLabelFunction } from '@home/pages/home-pages.models';
 import { BreadCrumbConfig } from '@shared/components/breadcrumb';
+import { WhiteLabelingComponent } from '@home/pages/admin/white-labeling.component';
 
 @Injectable()
 export class OAuth2LoginProcessingUrlResolver implements Resolve<string> {
@@ -183,6 +184,19 @@ const routes: Routes = [
             }
           }
         ]
+      },
+      {
+        path: 'white-labeling',
+        component: WhiteLabelingComponent,
+        canDeactivate: [ConfirmOnExitGuard],
+        data: {
+          auth: [Authority.SYS_ADMIN],
+          title: 'admin.white-labeling.title',
+          breadcrumb: {
+            label: 'admin.white-labeling.title',
+            icon: 'format_paint'
+          }
+        }
       }
     ]
   }

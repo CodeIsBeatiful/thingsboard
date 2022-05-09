@@ -48,6 +48,9 @@ export class ImageInputComponent extends PageComponent implements AfterViewInit,
   @Input()
   maxSizeByte: number;
 
+  @Input()
+  accept: 'image/*';
+
   private requiredValue: boolean;
 
   get required(): boolean {

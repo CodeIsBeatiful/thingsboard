@@ -1,0 +1,144 @@
+/**
+ * Copyright © 2016-2022 The Thingsboard Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import '_theming';
+@import 'datetimepicker-theme';
+
+$mat-tb-primary: map_merge($mat-indigo, (
+        500: #305680,
+        600: #527dad,
+        A100: #a7c1de
+));
+
+$mat-tb-accent: map_merge($mat-deep-orange, (
+));
+
+@mixin mat-fab-toolbar-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  mat-fab-toolbar {
+    .mat-fab-toolbar-background {
+      background: mat-color($background, app-bar);
+      color: mat-color($foreground, text);
+    }
+    &.mat-primary {
+      .mat-fab-toolbar-background {
+        @include _mat-toolbar-color($primary);
+      }
+    }
+    &.mat-accent {
+      .mat-fab-toolbar-background {
+        @include _mat-toolbar-color($accent);
+      }
+    }
+    &.mat-warn {
+      .mat-fab-toolbar-background {
+        @include _mat-toolbar-color($warn);
+      }
+    }
+  }
+}
+
+@mixin _mat-toolbar-inverse-color($palette) {
+  background: #fff;
+  color: $dark-primary-text;
+}
+
+@mixin mat-fab-toolbar-inverse-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, foreground);
+  $foreground: map-get($theme, background);
+
+  mat-fab-toolbar {
+    .mat-fab-toolbar-background {
+      background: #fff;
+      color: mat-color($foreground, text);
+    }
+    &.mat-primary {
+      .mat-fab-toolbar-background {
+        @include _mat-toolbar-inverse-color($primary);
+      }
+    }
+    mat-toolbar {
+      &.mat-primary {
+        @include _mat-toolbar-inverse-color($primary);
+        button.mat-icon-button {
+          mat-icon {
+            color: mat-color($primary);
+          }
+        }
+      }
+    }
+    .mat-fab {
+      &.mat-primary {
+        background: #fff;
+        color: mat-color($primary);
+      }
+    }
+  }
+
+}
+
+@mixin tb-components-theme($theme) {
+  $primary: map-get($theme, primary);
+
+  mat-toolbar{
+    &.mat-hue-3 {
+      background-color: mat-color($primary, 'A100');
+    }
+  }
+
+  @include mat-fab-toolbar-theme($theme);
+
+  div.tb-dashboard-page.mobile-app {
+    @include mat-fab-toolbar-inverse-theme($tb-theme);
+  }
+}
+
+$tb-primary-colors: map_merge($mat-{{primary-palette}}, ({{primary-colors}}));
+$tb-accent-colors: map_merge($mat-{{accent-palette}}, ({{accent-colors}}));
+
+$tb-primary: mat-palette($tb-primary-colors);
+$tb-accent: mat-palette($tb-accent-colors);
+
+$background: (background: map_get($mat-grey, 200));
+
+$tb-theme-background: map_merge($mat-light-theme-background, $background);
+
+$tb-mat-theme: mat-light-theme(
+    $tb-primary,
+    $tb-accent
+);
+
+$tb-theme: map_merge($tb-mat-theme, (background: $tb-theme-background));
+
+.tb-default {
+  @include angular-material-theme($tb-theme);
+  @include mat-datetimepicker-theme($tb-theme);
+  @include tb-components-theme($tb-theme);
+}
+
+.tb-default, .tb-dark {
+  .tb-primary-background {
+    background-color: mat-color($tb-primary);
+  }
+}

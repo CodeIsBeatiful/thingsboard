@@ -30,6 +30,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { AuthState } from '@core/auth/auth.models';
 import { WINDOW } from '@core/services/window.service';
 import { instanceOfSearchableComponent, ISearchableComponent } from '@home/models/searchable-component.models';
+import {WhitelabelUtilsService} from '@core/services/whitelabel-utils.service';
 
 @Component({
   selector: 'tb-home',
@@ -67,6 +68,7 @@ export class HomeComponent extends PageComponent implements AfterViewInit, OnIni
 
   constructor(protected store: Store<AppState>,
               @Inject(WINDOW) private window: Window,
+              public whiteLabelUtilsService: WhitelabelUtilsService,
               public breakpointObserver: BreakpointObserver) {
     super(store);
   }

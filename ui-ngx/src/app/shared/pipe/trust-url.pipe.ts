@@ -14,23 +14,15 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import {WhitelabelUtilsService} from '@core/services/whitelabel-utils.service';
+import {Pipe, PipeTransform} from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
 
-@Component({
-  selector: 'tb-logo',
-  templateUrl: './logo.component.html',
-  styleUrls: ['./logo.component.scss']
-})
-export class LogoComponent {
+@Pipe({name: 'trustUrl'})
+export class TrustUrlPipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizer) {}
 
-  logo = 'assets/logo_title_white.svg';
-
-  constructor(public whitelabelUtilsService: WhitelabelUtilsService) {
+  transform(url: any, args?: any): any {
+    // can pass unsafe url
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
-
-  gotoThingsboard(): void {
-    window.open('https://thingsboard.io', '_blank');
-  }
-
 }

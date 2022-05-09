@@ -159,6 +159,8 @@ import { TbMarkdownComponent } from '@shared/components/markdown.component';
 import { ProtobufContentComponent } from '@shared/components/protobuf-content.component';
 import { CssComponent } from '@shared/components/css.component';
 import { SafePipe } from '@shared/pipe/safe.pipe';
+import { TrustUrlPipe } from '@shared/pipe/trust-url.pipe';
+import { PaletteComponent } from '@shared/components/palette.component';
 
 export function MarkedOptionsFactory(markedOptionsService: MarkedOptionsService) {
   return markedOptionsService;
@@ -173,6 +175,7 @@ export function MarkedOptionsFactory(markedOptionsService: MarkedOptionsService)
     TruncatePipe,
     TbJsonPipe,
     FileSizePipe,
+    TrustUrlPipe,
     SafePipe,
     {
       provide: FlowInjectionToken,
@@ -265,6 +268,7 @@ export function MarkedOptionsFactory(markedOptionsService: MarkedOptionsService)
     TruncatePipe,
     TbJsonPipe,
     FileSizePipe,
+    TrustUrlPipe,
     SafePipe,
     SelectableColumnsPipe,
     KeyboardShortcutPipe,
@@ -277,6 +281,7 @@ export function MarkedOptionsFactory(markedOptionsService: MarkedOptionsService)
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
     TogglePasswordComponent,
+    PaletteComponent,
     ProtobufContentComponent
   ],
   imports: [
@@ -460,6 +465,7 @@ export function MarkedOptionsFactory(markedOptionsService: MarkedOptionsService)
     TbJsonPipe,
     KeyboardShortcutPipe,
     FileSizePipe,
+    TrustUrlPipe,
     SafePipe,
     SelectableColumnsPipe,
     RouterModule,
@@ -472,6 +478,7 @@ export function MarkedOptionsFactory(markedOptionsService: MarkedOptionsService)
     WidgetsBundleSearchComponent,
     CopyButtonComponent,
     TogglePasswordComponent,
+    PaletteComponent,
     ProtobufContentComponent
   ]
 })

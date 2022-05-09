@@ -14,23 +14,20 @@
 /// limitations under the License.
 ///
 
-import { Component } from '@angular/core';
-import {WhitelabelUtilsService} from '@core/services/whitelabel-utils.service';
+import {environment as env} from '@env/environment';
 
-@Component({
-  selector: 'tb-logo',
-  templateUrl: './logo.component.html',
-  styleUrls: ['./logo.component.scss']
-})
-export class LogoComponent {
 
-  logo = 'assets/logo_title_white.svg';
-
-  constructor(public whitelabelUtilsService: WhitelabelUtilsService) {
-  }
-
-  gotoThingsboard(): void {
-    window.open('https://thingsboard.io', '_blank');
-  }
-
-}
+export const whiteLabeling = {
+  logoImageUrl: 'assets/logo_title_white.svg',
+  logoImageHeight: 42,
+  faviconUrl: 'thingsboard.ico',
+  appTitle: env.appTitle,
+  paletteSettings: null,
+  helpLinkBaseUrl: null,
+  enableHelpLinks: true,
+  whiteLabelingEnabled: true,
+  showNameVersion: false,
+  platformName: 'thingsboard',
+  platformVersion: env.tbVersion,
+  customCss: null
+};

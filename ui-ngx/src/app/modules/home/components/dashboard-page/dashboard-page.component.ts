@@ -135,6 +135,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import cssjs from '@core/css/css';
 import { DOCUMENT } from '@angular/common';
 import { IAliasController } from '@core/api/widget-api.models';
+import { WhitelabelUtilsService } from '@core/services/whitelabel-utils.service';
 
 // @dynamic
 @Component({
@@ -334,6 +335,7 @@ export class DashboardPageComponent extends PageComponent implements IDashboardC
               private overlay: Overlay,
               private viewContainerRef: ViewContainerRef,
               private cd: ChangeDetectorRef,
+              public whiteLabelUtilsService: WhitelabelUtilsService,
               private sanitizer: DomSanitizer) {
     super(store);
     if (isDefinedAndNotNull(embeddedValue)) {

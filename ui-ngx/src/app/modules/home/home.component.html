@@ -24,8 +24,8 @@
     <header class="tb-nav-header">
       <mat-toolbar color="primary" class="tb-nav-header-toolbar">
         <div fxFlex="auto" fxLayout="row">
-          <img [src]="logo"
-               aria-label="logo" class="tb-logo-title"/>
+          <img [src]="whiteLabelUtilsService.whiteLabeling.logoImageUrl | trustUrl"
+                 aria-label="logo" class="tb-logo-title" [style.height.px]="whiteLabelUtilsService.whiteLabeling.logoImageHeight"/>
         </div>
       </mat-toolbar>
     </header>
