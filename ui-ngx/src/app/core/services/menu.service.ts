@@ -293,6 +293,13 @@ export class MenuService {
       },
       {
         id: guid(),
+        name: 'scheduler-job.scheduler-jobs',
+        type: 'link',
+        path: '/schedulerJobs',
+        icon: 'schedule'
+      },
+      {
+        id: guid(),
         name: 'entity-view.entity-views',
         type: 'link',
         path: '/entityViews',
