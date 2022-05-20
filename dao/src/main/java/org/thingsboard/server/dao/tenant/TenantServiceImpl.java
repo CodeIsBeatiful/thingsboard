@@ -36,7 +36,6 @@ import org.thingsboard.server.dao.ota.OtaPackageService;
 import org.thingsboard.server.dao.resource.ResourceService;
 import org.thingsboard.server.dao.rpc.RpcService;
 import org.thingsboard.server.dao.rule.RuleChainService;
-import org.thingsboard.server.dao.scheduler.SchedulerJobService;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.service.PaginatedRemover;
 import org.thingsboard.server.dao.service.Validator;
@@ -99,9 +98,6 @@ public class TenantServiceImpl extends AbstractEntityService implements TenantSe
     private RpcService rpcService;
 
     @Autowired
-    private SchedulerJobService schedulerJobService;
-
-    @Autowired
     private DataValidator<Tenant> tenantValidator;
 
     @Override
@@ -160,7 +156,6 @@ public class TenantServiceImpl extends AbstractEntityService implements TenantSe
         resourceService.deleteResourcesByTenantId(tenantId);
         otaPackageService.deleteOtaPackagesByTenantId(tenantId);
         rpcService.deleteAllRpcByTenantId(tenantId);
-        schedulerJobService.deleteSchedulerJobsByTenantId(tenantId);
         tenantDao.removeById(tenantId, tenantId.getId());
         deleteEntityRelations(tenantId, tenantId);
     }

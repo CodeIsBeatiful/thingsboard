@@ -636,20 +636,6 @@ CREATE TABLE IF NOT EXISTS rpc (
     status varchar(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS scheduler_job (
-    id uuid NOT NULL CONSTRAINT scheduler_job_pkey PRIMARY KEY,
-    created_time bigint NOT NULL,
-    tenant_id uuid,
-    name varchar(255),
-    search_text varchar(255),
-    customer_id uuid,
-    type varchar(255),
-    schedule varchar,
-    configuration varchar(10000000),
-    additional_info varchar(10000000),
-    CONSTRAINT scheduler_job_name_unq_key UNIQUE (tenant_id, name)
-);
-
 CREATE OR REPLACE PROCEDURE cleanup_events_by_ttl(
     IN regular_events_start_ts bigint,
     IN regular_events_end_ts bigint,
