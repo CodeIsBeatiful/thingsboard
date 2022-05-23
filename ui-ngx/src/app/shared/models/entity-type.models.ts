@@ -36,6 +36,7 @@ export enum EntityType {
   API_USAGE_STATE = 'API_USAGE_STATE',
   TB_RESOURCE = 'TB_RESOURCE',
   OTA_PACKAGE = 'OTA_PACKAGE',
+  SCHEDULER_JOB = 'SCHEDULER_JOB',
   RPC = 'RPC'
 }
 
@@ -297,6 +298,17 @@ export const entityTypeTranslations = new Map<EntityType | AliasEntityType, Enti
       }
     ],
     [
+      EntityType.SCHEDULER_JOB,
+      {
+        type: 'entity.type-scheduler-job',
+        details: 'scheduler-job.scheduler-job-details',
+        add: 'scheduler-job.add',
+        noEntities: 'scheduler-job.no-jobs-text',
+        search: 'scheduler-job.search',
+        selectedEntities: 'scheduler-job.selected-job'
+      }
+    ],
+    [
       EntityType.OTA_PACKAGE,
       {
         type: 'entity.type-ota-package',
@@ -388,6 +400,12 @@ export const entityTypeResources = new Map<EntityType, EntityTypeResource<BaseDa
       EntityType.TB_RESOURCE,
       {
         helpLinkId: 'resources'
+      }
+    ],
+    [
+      EntityType.SCHEDULER_JOB,
+      {
+        helpLinkId: 'schedulerJobs'
       }
     ],
     [

@@ -1,0 +1,100 @@
+<!--
+
+    Copyright © 2016-2022 The Thingsboard Authors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<div fxLayout="column" fxLayoutGap="8px" [formGroup]="scheduleFormGroup">
+  <tb-timezone-select
+    userTimezoneByDefault
+    required
+    formControlName="timezone">
+  </tb-timezone-select>
+  <section fxLayout="row">
+    <mat-form-field class="mat-block">
+      <mat-label translate>scheduler-job.schedule.start-time</mat-label>
+      <mat-datetimepicker-toggle [for]="startTimePicker" matPrefix></mat-datetimepicker-toggle>
+      <mat-datetimepicker #startTimePicker type="datetime" openOnFocus="true"></mat-datetimepicker>
+      <input required matInput formControlName="startTime" [matDatetimepicker]="startTimePicker">
+      <mat-error *ngIf="scheduleFormGroup.get('startTime').hasError('required')">
+        {{ 'scheduler-job.start-time-required' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </section>
+  <mat-checkbox formControlName="repeat" style="display: block; padding-bottom: 16px;">
+    {{ 'scheduler-job.schedule.show-repeat' | translate }}
+  </mat-checkbox>
+  <section fxLayout="column" *ngIf="scheduleFormGroup.get('repeat').value">
+    <mat-form-field class="mat-block">
+      <mat-label translate>scheduler-job.schedule.repeats</mat-label>
+      <mat-select formControlName="repeatType"  style="color:rgb(255, 255, 255);font-weight: 500;">
+        <mat-option *ngFor="let repeatType of repeatTypes" [value]="repeatType">
+          {{ repeatTypeTranslationMap.get(repeatType) | translate }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="scheduleFormGroup.get('repeatType').hasError('required')">
+        {{ 'scheduler-job.schedule.repeat-type-required' | translate }}
+      </mat-error>
+    </mat-form-field>
+    <div formGroupName="timer" fxLayout="column" *ngIf="scheduleFormGroup.get('repeatType').value === 'TIMER'">
+      <mat-label translate>scheduler-job.schedule.repeat-every</mat-label>
+      <div fxLayout="row" fxLayoutGap.gt-xs="8px" fxLayoutGap.sm="8px"
+           fxLayout.xs="column" fxLayout.md="column">
+        <mat-form-field class="mat-block" fxFlex="50">
+          <mat-label translate>scheduler-job.schedule.repeat-interval</mat-label>
+          <input matInput type="number" min="0" formControlName="repeatInterval" required>
+          <mat-error *ngIf="scheduleFormGroup.get('timer.repeatInterval').hasError('required')">
+            {{ 'scheduler-job.schedule.repeat-interval-required' | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="mat-block" fxFlex="50">
+          <mat-label translate>scheduler-job.schedule.repeat-every-time-unit</mat-label>
+          <mat-select formControlName="timeUnit">
+            <mat-option *ngFor="let timeUnit of timeUnits" [value]="timeUnit">
+              {{ timeUnitTranslations.get(timeUnit) | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div formArrayName="weekly" fxLayout="column" *ngIf="scheduleFormGroup.get('repeatType').value === 'WEEKLY'">
+      <mat-label translate>scheduler-job.schedule.repeat-on</mat-label>
+      <span style="height: 16px;"></span>
+      <div fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="16px">
+        <div fxLayout="row" fxLayoutGap="16px">
+          <mat-checkbox *ngFor="let day of firstRowDays" [formControl]="weeklyRepeatControl(day)">
+            {{ dayOfWeekTranslationsArray[day] | translate }}
+          </mat-checkbox>
+        </div>
+        <div fxLayout="row" fxLayoutGap="16px">
+          <mat-checkbox *ngFor="let day of secondRowDays" [formControl]="weeklyRepeatControl(day)">
+            {{ dayOfWeekTranslationsArray[day] | translate }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div >
+    <section fxLayout="column">
+      <mat-form-field class="mat-block">
+        <mat-label translate>scheduler-job.schedule.end-time</mat-label>
+        <mat-datetimepicker-toggle [for]="endTimePicker" matPrefix></mat-datetimepicker-toggle>
+        <mat-datetimepicker #endTimePicker type="date" openOnFocus="true"></mat-datetimepicker>
+        <input required matInput formControlName="endTime" [matDatetimepicker]="endTimePicker">
+        <mat-error *ngIf="scheduleFormGroup.get('endTime').hasError('required')">
+          {{ 'scheduler-job.schedule.end-time-required' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </section>
+  </section>
+</div>
+

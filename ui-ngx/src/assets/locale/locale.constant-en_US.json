@@ -2457,6 +2457,53 @@
       "version-max-length": "Version should be less than 256",
       "warning-after-save-no-edit": "Once the package is uploaded, you will not be able to modify title, version, device profile and package type."
     },
+    "scheduler-job": {
+      "add": "Add Scheduler job",
+      "configuration": {
+        "target": "Target"
+      },
+      "configuration-tab": "Configuration",
+      "copyId": "Copy Scheduler job Id",
+      "delete": "Delete Scheduler job",
+      "description": "Description",
+      "idCopiedMessage": "Resource Scheduler job Id has been copied to clipboard",
+      "name": "Name",
+      "name-max-length": "Name should be less than 256.",
+      "name-required": "Name is required.",
+      "no-jobs-text": "No jobs found",
+      "repeat-types": {
+        "daily": "Daily",
+        "monthly": "Monthly",
+        "timer": "Timer",
+        "weekly": "Weekly",
+        "yearly": "Yearly"
+      },
+      "schedule": {
+        "end-time": "End time",
+        "end-time-required": "End time required.",
+        "repeat-every": "Repeat every",
+        "repeat-every-time-unit": "Repeat every time unit",
+        "repeat-interval": "Repeat interval",
+        "repeat-interval-required": "Repeat interval required.",
+        "repeat-on": "Repeat on",
+        "repeat-type-required": "Repeat type required.",
+        "repeats": "repeats",
+        "show-repeat": "Show repeat",
+        "start-time": "Start time",
+        "start-time-required": "Start time required."
+      },
+      "schedule-tab": "Schedule",
+      "scheduler-job-details": "Scheduler Job Details",
+      "scheduler-jobs": "Scheduler jobs",
+      "search": "Search",
+      "type": "Type",
+      "types": {
+        "rpc-to-device": "Rpc to Device",
+        "update-attributes": "Update attributes",
+        "update-firmware": "Update firmware",
+        "update-software": "update software"
+      }
+    },
     "position": {
         "top": "Top",
         "bottom": "Bottom",
