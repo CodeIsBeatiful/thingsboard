@@ -591,6 +591,16 @@ public class ModelConstants {
     public static final String DOUBLE_VALUE_COLUMN = "dbl_v";
     public static final String JSON_VALUE_COLUMN = "json_v";
 
+    /**
+     * Main names of influxDB.
+     */
+    public static final String INFLUX_TS_KV_MEASUREMENT = "ts_kv";
+    public static final String INFLUX_TS_KV_LATEST_MEASUREMENT = "ts_kv_latest";
+    public static final String INFLUX_ENTITY_TYPE_COLUMN = "entity_type";
+    public static final String INFLUX_ENTITY_ID_COLUMN = "entity_id";
+    public static final String INFLUX_KEY_COLUMN = "key";
+    public static final String TS_VALUE_COLUMN = "ts";
+
     protected static final String[] NONE_AGGREGATION_COLUMNS = new String[]{LONG_VALUE_COLUMN, DOUBLE_VALUE_COLUMN, BOOLEAN_VALUE_COLUMN, STRING_VALUE_COLUMN, JSON_VALUE_COLUMN, KEY_COLUMN, TS_COLUMN};
 
     protected static final String[] COUNT_AGGREGATION_COLUMNS = new String[]{count(LONG_VALUE_COLUMN), count(DOUBLE_VALUE_COLUMN), count(BOOLEAN_VALUE_COLUMN), count(STRING_VALUE_COLUMN), count(JSON_VALUE_COLUMN)};
