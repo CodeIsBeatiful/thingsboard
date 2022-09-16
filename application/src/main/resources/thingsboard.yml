@@ -259,6 +259,15 @@ cassandra:
       configuration: "${CASSANDRA_QUERY_TENANT_RATE_LIMITS_CONFIGURATION:1000:1,30000:60}"
       print_tenant_names: "${CASSANDRA_QUERY_TENANT_RATE_LIMITS_PRINT_TENANT_NAMES:false}"
 
+# InfluxDB driver configuration parameters
+influx:
+  url: "${INFLUX_URL:http://localhost:8086}"
+  username: "${INFLUX_USERNAME:thingsboard}"
+  password: "${INFLUX_PASSWORD:thingsboard}"
+  org_name: "${INFLUX_ORG_NAME:tb}"
+  bucket_name: "${INFLUX_BUCKET_NAME:tb}"
+  token_name: "${INFLUX_TOKEN_NAME:tb}"
+
 # SQL configuration parameters
 sql:
   # Specify batch size for persisting attribute updates
